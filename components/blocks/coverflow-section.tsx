@@ -2,13 +2,33 @@
 
 import * as React from "react";
 import { BookOpen, RefreshCw, AlertCircle } from "lucide-react";
-import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
+import { CoverflowCarousel, CoverflowSlide } from "@/components/ui/coverflow-carousel";
 import { Book } from "@/components/ui/book";
 import { COVERFLOW_SLIDES } from "@/constants/coverflow";
+import { resolveImageUrl } from "@/sanity/lib/image";
 
-interface CoverflowSectionProps {
+export interface CoverflowSectionProps {
   title?: string;
   description?: string;
+  slides?: CoverflowSlide[];
+  data?: {
+    title?: string;
+    description?: string;
+    slides?: Array<{
+      _key?: string;
+      title?: string;
+      subtitle?: string;
+      color?: string;
+      image?: any;
+      externalSrc?: string;
+      alt?: string;
+      meta?: Array<{
+        _key?: string;
+        label?: string;
+        value?: string;
+      }>;
+    }>;
+  } | null;
 }
 
 // Fallback grid component displayed if the 3D WebGL/carousel fails or has empty slides
@@ -16,7 +36,7 @@ function CoverflowFallbackGrid({
   slides,
   onRetry,
 }: {
-  slides: typeof COVERFLOW_SLIDES;
+  slides: CoverflowSlide[];
   onRetry?: () => void;
 }) {
   return (
@@ -107,15 +127,59 @@ class CarouselErrorBoundary extends React.Component<
 }
 
 export function CoverflowSection({
-  title = "Yearbook",
-  description = "Flip through our 3D coverflow showcase of yearbook prints, monographs, and commemorative albums.",
+  title: propTitle,
+  description: propDescription,
+  slides: propSlides,
+  data,
 }: CoverflowSectionProps) {
   const [retryKey, setRetryKey] = React.useState(0);
 
-  const hasValidSlides = Array.isArray(COVERFLOW_SLIDES) && COVERFLOW_SLIDES.length > 0;
+  const title = data?.title ?? propTitle ?? "Yearbook";
+  const description =
+    data?.description ??
+    propDescription ??
+    "Yearbook yang dirancang untuk mengabadikan cerita dan perjalananmu.";
+
+  const slides: CoverflowSlide[] = React.useMemo(() => {
+    if (propSlides && propSlides.length > 0) return propSlides;
+
+    if (data?.slides && data.slides.length > 0) {
+      return data.slides.map((slide, index) => {
+        const fallback = COVERFLOW_SLIDES[index % COVERFLOW_SLIDES.length];
+        const src = resolveImageUrl(
+          slide.image,
+          slide.externalSrc || fallback?.src
+        );
+
+        const dimensions = slide.image?.asset?.metadata?.dimensions;
+
+        return {
+          src,
+          alt: slide.alt || slide.title || fallback?.alt || "Yearbook Slide",
+          title: slide.title || fallback?.title || "Yearbook",
+          subtitle: slide.subtitle || fallback?.subtitle || "",
+          color: slide.color || fallback?.color || "#14532d",
+          aspectRatio: dimensions?.aspectRatio,
+          width: dimensions?.width,
+          height: dimensions?.height,
+          meta:
+            slide.meta && slide.meta.length > 0
+              ? slide.meta.map((m) => ({
+                label: m.label || "",
+                value: m.value || "",
+              }))
+              : fallback?.meta || [],
+        };
+      });
+    }
+
+    return COVERFLOW_SLIDES;
+  }, [data?.slides, propSlides]);
+
+  const hasValidSlides = Array.isArray(slides) && slides.length > 0;
 
   return (
-    <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden">
+    <section id="yearbook" className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden scroll-mt-12">
       <div className="flex flex-col items-center text-center mb-6 sm:mb-10">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
           {title}
@@ -132,13 +196,13 @@ export function CoverflowSection({
           key={retryKey}
           fallback={
             <CoverflowFallbackGrid
-              slides={COVERFLOW_SLIDES}
+              slides={slides}
               onRetry={() => setRetryKey((k) => k + 1)}
             />
           }
         >
           <CoverflowCarousel
-            slides={COVERFLOW_SLIDES}
+            slides={slides}
             showCaption={true}
             showPagination={true}
             showNavigation={true}

@@ -9,49 +9,48 @@ import { Book } from "@/components/ui/book";
 function BookCoverIllustration({
   src,
   alt,
-  title,
   color,
+  onRatioDetect,
 }: {
   src: string;
   alt: string;
-  title?: string;
   color?: string;
+  onRatioDetect?: (ratio: number) => void;
 }) {
   const [hasError, setHasError] = React.useState(false);
 
   if (hasError) {
     return (
       <div
-        className="w-full h-full min-h-[160px] flex flex-col items-center justify-center p-4 text-center select-none"
+        className="w-full h-full min-h-[160px] flex items-center justify-center select-none"
         style={{
-          background: `linear-gradient(135deg, ${color || "#1e293b"} 0%, rgba(0,0,0,0.6) 100%)`,
+          background: `linear-gradient(135deg, ${color || "#1e293b"} 0%, rgba(0,0,0,0.7) 100%)`,
         }}
       >
-        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center mb-2 border border-white/20">
+        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
           <BookOpen className="w-5 h-5 text-white/90" />
         </div>
-        <span className="text-[11px] font-medium text-white/90 line-clamp-2 px-2">
-          {title || "Special Edition"}
-        </span>
-        <span className="text-[9px] text-white/60 mt-1 uppercase tracking-wider font-mono">
-          RV Studio
-        </span>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-full min-h-[160px] overflow-hidden bg-muted/20">
+    <div className="relative w-full h-full bg-muted/20 overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={alt}
         draggable={false}
         referrerPolicy="no-referrer"
+        onLoad={(e) => {
+          const img = e.currentTarget;
+          if (img.naturalWidth && img.naturalHeight && onRatioDetect) {
+            onRatioDetect(img.naturalWidth / img.naturalHeight);
+          }
+        }}
         onError={() => setHasError(true)}
-        className="h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-105"
+        className="h-full w-full select-none object-cover pointer-events-none"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
     </div>
   );
 }
@@ -65,6 +64,9 @@ export interface CoverflowSlide {
   title?: string;
   subtitle?: string;
   color?: string;
+  aspectRatio?: number;
+  width?: number;
+  height?: number;
   meta?: { label: string; value: string }[];
 }
 
@@ -134,6 +136,17 @@ export function CoverflowCarousel({
   } | null>(null);
 
   const [selected, setSelected] = React.useState(0);
+  const [detectedRatios, setDetectedRatios] = React.useState<Record<number, number>>({});
+
+  const getSlideRatio = React.useCallback(
+    (index: number) => {
+      const slide = slides[index];
+      if (slide?.aspectRatio && slide.aspectRatio > 0) return slide.aspectRatio;
+      if (detectedRatios[index] && detectedRatios[index] > 0) return detectedRatios[index];
+      return 49 / 60;
+    },
+    [slides, detectedRatios]
+  );
 
   /** Nearest whole card, folded back into 0..count-1. */
   const indexAt = React.useCallback(
@@ -338,53 +351,55 @@ export function CoverflowCarousel({
           }}
         >
           <div
-            className="relative select-none"
+            className="relative select-none transition-[height] duration-300"
             style={{
-              height: "calc(var(--cf-card) * 60 / 49)",
+              height: `calc(var(--cf-card) / ${getSlideRatio(selected)})`,
               transformStyle: "preserve-3d",
             }}
           >
-            {slides.map((slide, index) => (
-              <div
-                key={index}
-                ref={(node) => {
-                  cardRefs.current[index] = node;
-                }}
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${index + 1} of ${count}`}
-                className={cn(
-                  "absolute left-1/2 top-0 aspect-[49/60] will-change-transform",
-                  cardClassName,
-                )}
-                style={{ width: "var(--cf-card)" }}
-              >
-                <Book
-                  size="full"
-                  color={slide.color || "#1e293b"}
-                  depth={6}
-                  variant="default"
-                  texture={true}
-                  illustration={
-                    <BookCoverIllustration
-                      src={slide.src}
-                      alt={slide.alt}
-                      title={slide.title}
-                      color={slide.color}
-                    />
-                  }
+            {slides.map((slide, index) => {
+              const slideRatio = getSlideRatio(index);
+              return (
+                <div
+                  key={index}
+                  ref={(node) => {
+                    cardRefs.current[index] = node;
+                  }}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${index + 1} of ${count}`}
+                  className={cn(
+                    "absolute left-1/2 top-0 will-change-transform",
+                    cardClassName,
+                  )}
+                  style={{
+                    width: "var(--cf-card)",
+                    aspectRatio: String(slideRatio),
+                  }}
                 >
-                  <div className="p-3 text-left">
-                    <p className="text-[11px] font-semibold text-white/95 uppercase tracking-wider truncate">
-                      {slide.title || `Volume ${index + 1}`}
-                    </p>
-                    <p className="text-[9px] text-white/70 truncate">
-                      {slide.subtitle || "Yearbook Edition"}
-                    </p>
-                  </div>
-                </Book>
-              </div>
-            ))}
+                  <Book
+                    size="full"
+                    color={slide.color || "#1e293b"}
+                    depth={6}
+                    variant="default"
+                    texture={true}
+                    illustration={
+                      <BookCoverIllustration
+                        src={slide.src}
+                        alt={slide.alt}
+                        color={slide.color}
+                        onRatioDetect={(ratio) => {
+                          setDetectedRatios((prev) => {
+                            if (prev[index] === ratio) return prev;
+                            return { ...prev, [index]: ratio };
+                          });
+                        }}
+                      />
+                    }
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
 

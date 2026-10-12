@@ -61,6 +61,9 @@ export const ModernBookCover = ({
   color = "zinc",
   isStatic = false,
   className = "",
+  depth,
+  texture,
+  variant,
   illustration,
   children,
 }: ModernBookCoverProps) => {
@@ -69,12 +72,16 @@ export const ModernBookCover = ({
     colorMap.zinc;
 
   const isFullSize = size === "full";
-  const spineDepth = 48; // depth of the book pages / spine
+  const spineDepth = depth ? depth * 4 : 32; // Realistic 3D book thickness in px
+
+  // If custom hex or color string is provided, apply custom styling
+  const customBg =
+    color && !colorMap[color as keyof typeof colorMap] ? color : undefined;
 
   return (
     <div
       className={cn(
-        "z-10 group [perspective:900px] [--shadowColor:#bbb] dark:[--shadowColor:#050505]",
+        "z-10 group [perspective:1200px] select-none [--shadowColor:rgba(0,0,0,0.35)] dark:[--shadowColor:rgba(0,0,0,0.7)]",
         isFullSize ? "w-full h-full flex justify-center items-center" : "w-min",
         className
       )}
@@ -83,72 +90,133 @@ export const ModernBookCover = ({
         style={{
           width: isFullSize ? "100%" : sizeMap[size]?.width || sizeMap.md.width,
           height: isFullSize ? "100%" : undefined,
-          transition: "transform 1000ms cubic-bezier(0.16, 1, 0.3, 1)",
+          transition: "transform 650ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 650ms cubic-bezier(0.16, 1, 0.3, 1)",
         }}
         className={cn(
-          "relative [transform-style:preserve-3d]",
+          "relative [transform-style:preserve-3d] will-change-transform",
           !isFullSize && "aspect-3/4",
           isStatic
-            ? "[transform:rotateY(-30deg)]"
-            : "[transform:rotateY(0deg)] group-hover:[transform:rotateY(-30deg)]",
+            ? "[transform:rotateY(-26deg)_rotateX(3deg)]"
+            : "[transform:rotateY(0deg)_rotateX(0deg)] group-hover:[transform:rotateY(-28deg)_rotateX(3deg)_translateZ(10px)]",
           radiusMap[radius]
         )}
       >
-        {/* Front Side */}
+        {/* Front Cover (Hardcover with Image) */}
         <div
           className={cn(
-            "absolute inset-y-0 overflow-hidden size-full left-0 text-white flex flex-col justify-end p-6 bg-gradient-to-tr",
-            gradient.from,
-            gradient.to,
+            "absolute inset-0 size-full left-0 overflow-hidden text-white flex flex-col justify-end bg-gradient-to-tr [transform-style:preserve-3d]",
+            !customBg && gradient.from,
+            !customBg && gradient.to,
             radiusMap[radius]
           )}
           style={{
-            transform: "translateZ(24px)",
-            boxShadow: "5px 5px 24px var(--shadowColor)",
+            backgroundColor: customBg,
+            transform: `translateZ(${spineDepth / 2}px)`,
+            boxShadow: "0 10px 30px -5px var(--shadowColor), 0 2px 6px rgba(0,0,0,0.15)",
           }}
         >
           {illustration && (
-            <div className="absolute inset-0 z-0 overflow-hidden">
+            <div className="absolute inset-0 size-full z-0 overflow-hidden pointer-events-none">
               {illustration}
             </div>
           )}
+
+          {/* Realistic Spine Crease / Hinge Shadow along left edge */}
           <div
-            className="absolute left-0 top-0 h-full pointer-events-none z-10"
+            className="absolute left-0 top-0 bottom-0 pointer-events-none z-20"
             style={{
-              minWidth: "8.2%",
+              width: "14px",
               background:
-                "linear-gradient(90deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0) 12%, hsla(0, 0%, 100%, .25) 29.25%, hsla(0, 0%, 100%, 0) 50.5%, hsla(0, 0%, 100%, 0) 75.25%, hsla(0, 0%, 100%, .25) 91%, hsla(0, 0%, 100%, 0)), linear-gradient(90deg, rgba(0, 0, 0, .03), rgba(0, 0, 0, .1) 12%, transparent 30%, rgba(0, 0, 0, .02) 50%, rgba(0, 0, 0, .2) 73.5%, rgba(0, 0, 0, .5) 75.25%, rgba(0, 0, 0, .15) 85.25%, transparent)",
-              opacity: 0.25,
+                "linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 25%, rgba(255,255,255,0.18) 50%, rgba(0,0,0,0.08) 80%, transparent 100%)",
             }}
           />
-          <div className="pl-1 relative z-10">{children}</div>
+
+          {/* Dynamic Lighting / Specular Sheen across front cover on hover */}
+          <div
+            className="absolute inset-0 pointer-events-none z-20 transition-opacity duration-700 opacity-0 group-hover:opacity-100"
+            style={{
+              background:
+                "linear-gradient(115deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 40%, transparent 70%)",
+            }}
+          />
+
+          {children && (
+            <div className="relative z-30 p-4">{children}</div>
+          )}
         </div>
 
-        {/* Spine / Pages Edge */}
+        {/* Left Spine (Punggung Buku Kiri) */}
         <div
-          className="absolute bg-white pointer-events-none"
+          className="absolute top-0 bottom-0 pointer-events-none overflow-hidden"
           style={{
-            top: "3px",
-            bottom: "3px",
             width: `${spineDepth}px`,
-            right: `-${spineDepth / 2}px`,
-            transform: "rotateY(90deg)",
-            background:
-              "linear-gradient(90deg, rgba(255,255,255,1) 50%, rgba(240,240,240,1) 50%)",
+            left: `-${spineDepth / 2}px`,
+            transform: "rotateY(-90deg)",
+            backgroundColor: customBg || "#1e293b",
+            background: customBg
+              ? `linear-gradient(90deg, rgba(0,0,0,0.3) 0%, ${customBg} 50%, rgba(0,0,0,0.4) 100%)`
+              : "linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.5) 100%)",
+            boxShadow: "inset 0 0 10px rgba(0,0,0,0.4)",
           }}
         />
 
-        {/* Back Side */}
+        {/* Right Page Edge (Lembaran Halaman Kanan) */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: "2px",
+            bottom: "2px",
+            width: `${spineDepth - 3}px`,
+            right: `-${(spineDepth - 3) / 2}px`,
+            transform: "rotateY(90deg)",
+            background:
+              "repeating-linear-gradient(90deg, #f8fafc 0px, #f1f5f9 2px, #e2e8f0 3px, #cbd5e1 4px)",
+            boxShadow: "inset 0 0 8px rgba(0,0,0,0.25)",
+          }}
+        />
+
+        {/* Top Page Edge (Lembaran Kertas Atas) */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            left: "2px",
+            right: "2px",
+            height: `${spineDepth - 3}px`,
+            top: `-${(spineDepth - 3) / 2}px`,
+            transform: "rotateX(90deg)",
+            background:
+              "repeating-linear-gradient(0deg, #f8fafc 0px, #f1f5f9 2px, #e2e8f0 3px, #cbd5e1 4px)",
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.2)",
+          }}
+        />
+
+        {/* Bottom Page Edge (Lembaran Kertas Bawah) */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            left: "2px",
+            right: "2px",
+            height: `${spineDepth - 3}px`,
+            bottom: `-${(spineDepth - 3) / 2}px`,
+            transform: "rotateX(-90deg)",
+            background:
+              "repeating-linear-gradient(0deg, #f8fafc 0px, #f1f5f9 2px, #e2e8f0 3px, #cbd5e1 4px)",
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.25)",
+          }}
+        />
+
+        {/* Back Cover (Sampul Belakang) */}
         <div
           className={cn(
-            "absolute inset-y-0 overflow-hidden size-full left-0 text-white flex flex-col justify-end p-6 bg-gradient-to-tr",
-            gradient.from,
-            gradient.to,
+            "absolute inset-0 size-full left-0 overflow-hidden text-white bg-gradient-to-tr",
+            !customBg && gradient.from,
+            !customBg && gradient.to,
             radiusMap[radius]
           )}
           style={{
-            transform: "translateZ(-24px)",
-            boxShadow: "-10px 0 50px 10px var(--shadowColor)",
+            backgroundColor: customBg,
+            transform: `translateZ(-${spineDepth / 2}px)`,
+            boxShadow: "-12px 12px 35px 5px var(--shadowColor)",
           }}
         />
       </div>

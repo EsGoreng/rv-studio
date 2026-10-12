@@ -1,16 +1,59 @@
 "use client";
 
-import { TiltedGridHero } from "@/components/ui/tilted-grid-hero";
+import { useMemo } from "react";
+import { TiltedGridHero, TiltedGridImage } from "@/components/ui/tilted-grid-hero";
 import { HERO_IMAGES } from "@/constants/hero";
+import { resolveImageUrl } from "@/sanity/lib/image";
 
-interface HeroProps {
+export interface HeroBlockProps {
   speed?: number;
+  title?: string;
+  subtitle?: string;
+  images?: TiltedGridImage[];
+  data?: {
+    title?: string;
+    subtitle?: string;
+    speed?: number;
+    images?: Array<{
+      alt?: string;
+      image?: any;
+      externalSrc?: string;
+      src?: string;
+    }>;
+  } | null;
 }
 
-export function Hero({ speed = 8 }: HeroProps) {
+export function Hero({
+  speed: propSpeed,
+  title: propTitle,
+  subtitle: propSubtitle,
+  images: propImages,
+  data,
+}: HeroBlockProps) {
+  const speed = data?.speed ?? propSpeed ?? 8;
+  const title = data?.title ?? propTitle ?? "RV Project.";
+  const subtitle =
+    data?.subtitle ??
+    propSubtitle ??
+    "Photography, videography, and yearbook production crafted with high aesthetic fidelity to turn fleeting moments into enduring memories.";
+
+  const images: TiltedGridImage[] = useMemo(() => {
+    if (propImages && propImages.length > 0) return propImages;
+    if (data?.images && data.images.length > 0) {
+      return data.images.map((item, index) => ({
+        src: resolveImageUrl(
+          item.image,
+          item.externalSrc || item.src || HERO_IMAGES[index % HERO_IMAGES.length]?.src
+        ),
+        alt: item.alt || `Hero image ${index + 1}`,
+      }));
+    }
+    return HERO_IMAGES;
+  }, [data?.images, propImages]);
+
   return (
     <TiltedGridHero
-      images={HERO_IMAGES}
+      images={images}
       speed={speed}
       curve={48}
       tilt={0}
@@ -31,13 +74,13 @@ export function Hero({ speed = 8 }: HeroProps) {
         <div className="flex flex-col items-center max-w-3xl mx-auto space-y-4 sm:space-y-6">
           {/* Main Title */}
           <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-7xl/none drop-shadow-xs">
-            RV Project.
+            {title}
             <br />
           </h1>
 
           {/* Subtitle */}
           <p className="max-w-2xl text-balance text-sm sm:text-base md:text-lg text-muted-foreground">
-            Photography, videography, and yearbook production crafted with high aesthetic fidelity to turn fleeting moments into enduring memories.
+            {subtitle}
           </p>
         </div>
       </div>

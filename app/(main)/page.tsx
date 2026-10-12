@@ -3,19 +3,21 @@ import { VideoShowcaseSection } from "@/components/blocks/video-showcase";
 import { GallerySection } from "@/components/blocks/gallery-section";
 import { CoverflowSection } from "@/components/blocks/coverflow-section";
 import { FAQSection } from "@/components/blocks/faq";
-import { ContactSection } from "@/components/blocks/contact";
 import BentoGallerySection from "@/components/blocks/bento-gallery-section";
+import { getHomePageData } from "@/sanity/lib/queries";
 
-export default function Home() {
+
+export default async function Home() {
+  const sanityData = await getHomePageData();
+
   return (
     <>
-      <Hero />
-      <VideoShowcaseSection />
-      <GallerySection />
-      <CoverflowSection />
-      <FAQSection />
-      <ContactSection />
+      <Hero data={sanityData?.hero} />
+      <VideoShowcaseSection data={sanityData?.videoShowcase} />
+      <GallerySection data={sanityData?.gallery} />
+      <CoverflowSection data={sanityData?.coverflow} />
+      {/* <BentoGallerySection data={sanityData?.bentoGallery} /> */}
+      <FAQSection data={sanityData?.faq} />
     </>
   );
 }
-
