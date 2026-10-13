@@ -6,6 +6,19 @@ export const galleryType = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "title",
+      title: "Section Title",
+      type: "string",
+      initialValue: "Project Gallery",
+    }),
+    defineField({
+      name: "description",
+      title: "Section Description",
+      type: "text",
+      rows: 3,
+      initialValue: "Eksplorasi portfolio karya dokumentasi visual, portraiture kreatif, dan produksi tahunan kami berdasarkan kategori.",
+    }),
+    defineField({
       name: "items",
       title: "Gallery Items",
       type: "array",

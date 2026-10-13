@@ -6,12 +6,12 @@ export const structure: StructureResolver = (S) =>
     .title("RV Studio Content")
     .items([
       S.listItem()
-        .title("Hero Section")
+        .title("Hero")
         .id("hero")
         .child(S.document().schemaType("hero").documentId("hero")),
 
       S.listItem()
-        .title("Video Showcase Section")
+        .title("Video Showcase")
         .id("videoShowcase")
         .child(
           S.document()
@@ -20,31 +20,31 @@ export const structure: StructureResolver = (S) =>
         ),
 
       S.listItem()
-        .title("Project Gallery Section")
+        .title("Showcase Gallery ")
+        .id("showcaseGallery")
+        .child(
+          S.document()
+            .schemaType("showcaseGallery")
+            .documentId("showcaseGallery")
+        ),
+
+      S.listItem()
+        .title("Gallery ")
         .id("gallery")
         .child(S.document().schemaType("gallery").documentId("gallery")),
 
       S.listItem()
-        .title("Coverflow 3D Yearbook")
+        .title("Yearbook")
         .id("coverflow")
         .child(S.document().schemaType("coverflow").documentId("coverflow")),
 
       S.listItem()
-        .title("Bento Moments Section")
-        .id("bentoGallery")
-        .child(
-          S.document()
-            .schemaType("bentoGallery")
-            .documentId("bentoGallery")
-        ),
-
-      S.listItem()
-        .title("FAQ Section")
+        .title("FAQ")
         .id("faq")
         .child(S.document().schemaType("faq").documentId("faq")),
 
       S.listItem()
-        .title("Contact Section")
+        .title("Contact")
         .id("contact")
         .child(S.document().schemaType("contact").documentId("contact")),
 
@@ -54,9 +54,9 @@ export const structure: StructureResolver = (S) =>
           ![
             "hero",
             "videoShowcase",
+            "showcaseGallery",
             "gallery",
             "coverflow",
-            "bentoGallery",
             "faq",
             "contact",
           ].includes(listItem.getId() || "")

@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { BookOpen, RefreshCw, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import { BookOpen, RefreshCw, AlertCircle, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { CoverflowCarousel, CoverflowSlide } from "@/components/ui/coverflow-carousel";
 import { Book } from "@/components/ui/book";
 import { COVERFLOW_SLIDES } from "@/constants/coverflow";
@@ -212,6 +214,15 @@ export function CoverflowSection({
           />
         </CarouselErrorBoundary>
       )}
+
+      <div className="mt-8 sm:mt-10 flex justify-center">
+        <Button asChild size="lg" className="group rounded-full px-6 font-medium shadow-sm transition-all hover:shadow-md">
+          <Link href="/yearbook">
+            Lihat Yearbook
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 }

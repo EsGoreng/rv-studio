@@ -1,4 +1,7 @@
 import { useMemo } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { VideoPlaylist } from "@/components/ui/video-playlist";
 import { SAMPLE_PLAYLIST, PlaylistItem } from "@/constants/video-playlist";
 import { resolveImageUrl } from "@/sanity/lib/image";
@@ -84,6 +87,15 @@ export function VideoShowcaseSection({
         nextOverlay={true}
         nextCountdownThreshold={6}
       />
+
+      <div className="mt-8 sm:mt-10 flex justify-center">
+        <Button asChild size="lg" className="group rounded-full px-6 font-medium shadow-sm transition-all hover:shadow-md">
+          <Link href="/videography">
+            Lihat Semua Video
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 }

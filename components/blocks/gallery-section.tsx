@@ -1,4 +1,7 @@
 import { useMemo } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ProjectFilterGallery, GalleryItem } from "@/components/ui/project-filter-gallery";
 import { GALLERY_ITEMS } from "@/constants/gallery";
 import { resolveImageUrl } from "@/sanity/lib/image";
@@ -77,6 +80,15 @@ export function GallerySection({
         gap={12}
         className="w-full"
       />
+
+      <div className="mt-8 sm:mt-10 flex justify-center">
+        <Button asChild size="lg" className="group rounded-full px-6 font-medium shadow-sm transition-all hover:shadow-md">
+          <Link href="/photography">
+            Lihat Semua Foto
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 }

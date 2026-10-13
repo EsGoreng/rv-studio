@@ -22,7 +22,21 @@ export const HOME_PAGE_QUERY = `{
       externalThumbnail
     }
   },
-  "gallery": *[_type == "gallery"][0]{
+  "showcaseGallery": coalesce(*[_type == "showcaseGallery"][0], *[_type == "gallery"][0]){
+    title,
+    description,
+    items[]{
+      _key,
+      title,
+      category,
+      image,
+      externalSrc,
+      alt
+    }
+  },
+  "gallery": coalesce(*[_type == "gallery"][0], *[_type == "showcaseGallery"][0]){
+    title,
+    description,
     items[]{
       _key,
       title,
@@ -59,16 +73,6 @@ export const HOME_PAGE_QUERY = `{
         label,
         value
       }
-    }
-  },
-  "bentoGallery": *[_type == "bentoGallery"][0]{
-    items[]{
-      _key,
-      title,
-      desc,
-      image,
-      externalSrc,
-      span
     }
   },
   "faq": *[_type == "faq"][0]{
@@ -116,6 +120,18 @@ export interface HomePageSanityData {
       externalThumbnail?: string;
     }>;
   } | null;
+  showcaseGallery?: {
+    title?: string;
+    description?: string;
+    items?: Array<{
+      _key?: string;
+      title?: string;
+      category?: string;
+      image?: any;
+      externalSrc?: string;
+      alt?: string;
+    }>;
+  } | null;
   gallery?: {
     title?: string;
     description?: string;
@@ -144,18 +160,6 @@ export interface HomePageSanityData {
         label?: string;
         value?: string;
       }>;
-    }>;
-  } | null;
-  bentoGallery?: {
-    title?: string;
-    description?: string;
-    items?: Array<{
-      _key?: string;
-      title?: string;
-      desc?: string;
-      image?: any;
-      externalSrc?: string;
-      span?: string;
     }>;
   } | null;
   faq?: {
@@ -197,6 +201,47 @@ export async function getHomePageData(): Promise<HomePageSanityData | null> {
   } catch (error) {
     console.warn(
       "Warning: Could not fetch home page data from Sanity. Using fallback dummy data.",
+      error
+    );
+    return null;
+  }
+}
+
+export const VIDEOGRAPHY_PAGE_QUERY = `{
+  "videoShowcase": *[_type == "videoShowcase"][0]{
+    title,
+    description,
+    items[]{
+      _key,
+      title,
+      description,
+      category,
+      duration,
+      videoSrc,
+      thumbnail,
+      externalThumbnail
+    }
+  }
+}`;
+
+export interface VideographyPageSanityData {
+  videoShowcase?: HomePageSanityData["videoShowcase"];
+}
+
+/**
+ * Fetches videography page data from Sanity.
+ */
+export async function getVideographyPageData(): Promise<VideographyPageSanityData | null> {
+  try {
+    const data = await client.fetch<VideographyPageSanityData>(
+      VIDEOGRAPHY_PAGE_QUERY,
+      {},
+      { next: { revalidate: 30 } }
+    );
+    return data;
+  } catch (error) {
+    console.warn(
+      "Warning: Could not fetch videography page data from Sanity. Using fallback.",
       error
     );
     return null;

@@ -23,23 +23,23 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   {
     title: "Home",
     icon: Home,
-    href: "#",
+    href: "/",
   },
   {
-    title: "Gallery",
+    title: "Photography",
     icon: Images,
-    href: "#gallery",
+    href: "/photography",
   },
   {
-    title: "Showcase",
+    title: "Videography",
     icon: Film,
-    href: "#videography",
+    href: "/videography",
   },
 
   {
-    title: "FAQ",
+    title: "About",
     icon: HelpCircle,
-    href: "#faq",
+    href: "/about",
   },
   {
     title: "Contact",
