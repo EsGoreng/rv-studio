@@ -23,8 +23,6 @@ export const HOME_PAGE_QUERY = `{
     }
   },
   "showcaseGallery": coalesce(*[_type == "showcaseGallery"][0], *[_type == "gallery"][0]){
-    title,
-    description,
     items[]{
       _key,
       title,
@@ -35,8 +33,6 @@ export const HOME_PAGE_QUERY = `{
     }
   },
   "gallery": coalesce(*[_type == "gallery"][0], *[_type == "showcaseGallery"][0]){
-    title,
-    description,
     items[]{
       _key,
       title,
@@ -121,8 +117,6 @@ export interface HomePageSanityData {
     }>;
   } | null;
   showcaseGallery?: {
-    title?: string;
-    description?: string;
     items?: Array<{
       _key?: string;
       title?: string;
@@ -133,8 +127,6 @@ export interface HomePageSanityData {
     }>;
   } | null;
   gallery?: {
-    title?: string;
-    description?: string;
     items?: Array<{
       _key?: string;
       title?: string;
@@ -247,3 +239,101 @@ export async function getVideographyPageData(): Promise<VideographyPageSanityDat
     return null;
   }
 }
+
+export const PHOTOGRAPHY_PAGE_QUERY = `{
+  "gallery": coalesce(*[_type == "gallery"][0], *[_type == "showcaseGallery"][0]){
+    items[]{
+      _key,
+      title,
+      category,
+      image,
+      externalSrc,
+      alt
+    }
+  }
+}`;
+
+export interface PhotographyPageSanityData {
+  gallery?: HomePageSanityData["gallery"];
+}
+
+/**
+ * Fetches photography page data from Sanity.
+ */
+export async function getPhotographyPageData(): Promise<PhotographyPageSanityData | null> {
+  try {
+    const data = await client.fetch<PhotographyPageSanityData>(
+      PHOTOGRAPHY_PAGE_QUERY,
+      {},
+      { next: { revalidate: 30 } }
+    );
+    return data;
+  } catch (error) {
+    console.warn(
+      "Warning: Could not fetch photography page data from Sanity. Using fallback.",
+      error
+    );
+    return null;
+  }
+}
+
+export const YEARBOOK_PAGE_QUERY = `{
+  "coverflow": *[_type == "coverflow"][0]{
+    title,
+    description,
+    slides[]{
+      _key,
+      title,
+      subtitle,
+      description,
+      pdfUrl,
+      color,
+      image {
+        ...,
+        asset-> {
+          _id,
+          url,
+          metadata {
+            dimensions {
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      },
+      externalSrc,
+      alt,
+      meta[]{
+        _key,
+        label,
+        value
+      }
+    }
+  }
+}`;
+
+export interface YearbookPageSanityData {
+  coverflow?: HomePageSanityData["coverflow"];
+}
+
+/**
+ * Fetches yearbook page data from Sanity.
+ */
+export async function getYearbookPageData(): Promise<YearbookPageSanityData | null> {
+  try {
+    const data = await client.fetch<YearbookPageSanityData>(
+      YEARBOOK_PAGE_QUERY,
+      {},
+      { next: { revalidate: 30 } }
+    );
+    return data;
+  } catch (error) {
+    console.warn(
+      "Warning: Could not fetch yearbook page data from Sanity. Using fallback.",
+      error
+    );
+    return null;
+  }
+}
+

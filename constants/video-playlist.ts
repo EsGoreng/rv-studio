@@ -16,7 +16,7 @@ export const SAMPLE_PLAYLIST: PlaylistItem[] = [
     duration: "YouTube",
     thumbnail: "https://img.youtube.com/vi/Dt8f-oDJjLo/hqdefault.jpg",
     videoSrc: "https://www.youtube.com/embed/Dt8f-oDJjLo",
-    category: "Motivation & Education",
+    category: "Podcast",
   },
   {
     id: "2",
@@ -25,7 +25,7 @@ export const SAMPLE_PLAYLIST: PlaylistItem[] = [
     duration: "YouTube",
     thumbnail: "https://img.youtube.com/vi/KQK7hMCazFY/hqdefault.jpg",
     videoSrc: "https://www.youtube.com/embed/KQK7hMCazFY",
-    category: "Podcast & Talkshow",
+    category: "Podcast",
   },
   {
     id: "3",
@@ -34,7 +34,7 @@ export const SAMPLE_PLAYLIST: PlaylistItem[] = [
     duration: "YouTube",
     thumbnail: "https://img.youtube.com/vi/oRWfLs1tISg/hqdefault.jpg",
     videoSrc: "https://www.youtube.com/embed/oRWfLs1tISg",
-    category: "Talkshow & Comedy",
+    category: "Education",
   },
   {
     id: "4",
@@ -43,6 +43,6 @@ export const SAMPLE_PLAYLIST: PlaylistItem[] = [
     duration: "YouTube",
     thumbnail: "https://img.youtube.com/vi/moMBAbM0W6w/hqdefault.jpg",
     videoSrc: "https://www.youtube.com/embed/moMBAbM0W6w",
-    category: "Education & Discussion",
+    category: "Education",
   },
 ];

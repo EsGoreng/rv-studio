@@ -61,10 +61,10 @@ export function TiltedGridHero({
   // Responsive adjustments: On mobile screens, give tiles larger relative width and height so they aren't tiny
   const isMobile = size.width < 640;
   const isTablet = size.width < 1024;
-  const effectiveMaxWidth = isMobile ? 48 : isTablet ? 65 : 46;
-  const effectiveTileHeight = isMobile ? Math.max(tileHeight, 36) : tileHeight;
-  // Reduce axis on mobile and tablet so the carousel sits higher up and does not get pushed down
-  const effectiveAxis = isMobile ? Math.min(axis - 10, 46) : isTablet ? Math.min(axis - 6, 50) : axis;
+  const effectiveMaxWidth = isMobile ? 66 : isTablet ? 55 : 46;
+  const effectiveTileHeight = isMobile ? Math.max(tileHeight, 28) : tileHeight;
+  // Well-proportioned vertical placement across viewports
+  const effectiveAxis = isMobile ? 58 : isTablet ? 54 : axis;
 
   // Geometry calculations
   const bend = (Math.min(75, Math.max(12, curve)) * Math.PI) / 180;
@@ -220,16 +220,16 @@ export function TiltedGridHero({
                 WebkitBackfaceVisibility: "hidden",
               }}
             >
-              <div className="group relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 dark:border-white/15 bg-card/90 transition-transform ">
+              <div className="group relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-white/10 dark:border-white/15 bg-card/90 transition-transform ">
                 <img
                   src={img.src}
                   alt={img.alt || "Studio portfolio"}
                   draggable={false}
                   loading="eager"
-                  className="w-full h-full object-cover select-none pointer-events-none rounded-2xl transition-transform "
+                  className="w-full h-full object-cover select-none pointer-events-none rounded-xl sm:rounded-2xl transition-transform "
                 />
                 {/* Subtle cinematic gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none rounded-xl sm:rounded-2xl" />
 
               </div>
             </div>

@@ -82,5 +82,72 @@ body {
   .shadow-book {
     box-shadow: 0 1.8px 3.6px rgba(0,0,0,.05),0 10.8px 21.6px rgba(0,0,0,.08),inset 0 -.9px 0 rgba(0,0,0,.1),inset 0 1.8px 1.8px hsla(0,0%,100%,.1),inset 3.6px 0 3.6px rgba(0,0,0,.1);
   }
+
+  /* DearFlip Dark Mode Theme Integration */
+  .dearflip-wrapper .df-container {
+    background: transparent !important;
+  }
+
+  .dearflip-wrapper .df-ui-controls {
+    background: rgba(18, 18, 18, 0.88) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    bottom: 14px !important;
+    padding: 2px 6px !important;
+  }
+
+  .dearflip-wrapper .df-ui-btn {
+    background-color: transparent !important;
+    color: #a3a3a3 !important;
+    border-radius: 9999px !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .dearflip-wrapper .df-ui-btn:hover,
+  .dearflip-wrapper .df-ui-btn.df-active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .dearflip-wrapper .df-ui-btn.disabled {
+    opacity: 0.3 !important;
+  }
+
+  .dearflip-wrapper .df-ui-page {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+  }
+
+  .dearflip-wrapper .df-ui-page input {
+    color: #ffffff !important;
+  }
+
+  .dearflip-wrapper .df-ui-page label {
+    color: #a3a3a3 !important;
+  }
+
+  .dearflip-wrapper .df-sidemenu {
+    background-color: rgba(15, 15, 15, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ededed !important;
+  }
+
+  .dearflip-wrapper .df-outline-container {
+    color: #d4d4d4 !important;
+  }
+
+  .dearflip-wrapper .df-outline-item a:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+  }
+
+  .dearflip-wrapper .df-ui-sidemenu-close {
+    background-color: rgba(25, 25, 25, 0.95) !important;
+    color: #ededed !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
 }
 

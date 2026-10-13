@@ -3,9 +3,9 @@
 import * as React from "react";
 import { VideographyHero } from "@/components/blocks/videography-hero";
 import { VideographyRow } from "@/components/blocks/videography-row";
-import { VideoDetailModal } from "@/components/blocks/video-detail-modal";
 import { PlaylistItem, SAMPLE_PLAYLIST } from "@/constants/video-playlist";
 import { resolveImageUrl } from "@/sanity/lib/image";
+import { DitheredHeader } from "@/components/ui/dithered-grid";
 
 export interface VideographyClientProps {
   data?: {
@@ -27,8 +27,6 @@ export interface VideographyClientProps {
 }
 
 export function VideographyClient({ data }: VideographyClientProps) {
-  const [modalVideo, setModalVideo] = React.useState<PlaylistItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedHeroVideo, setSelectedHeroVideo] = React.useState<PlaylistItem | null>(null);
 
   // Normalize all playlist items
@@ -83,25 +81,29 @@ export function VideographyClient({ data }: VideographyClientProps) {
     }));
   }, [allItems]);
 
-  const handleOpenDetail = (item: PlaylistItem) => {
-    setModalVideo(item);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseDetail = () => {
-    setIsModalOpen(false);
-    setModalVideo(null);
-  };
+  const title = "Videograph";
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white pb-32 sm:pb-36">
+    <div className="relative min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white pt-6 sm:pt-10 pb-8 sm:pb-16">
       {/* Container constrained to max-w-7xl, matching app/(main)/page.tsx */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 sm:pb-8 space-y-6 sm:space-y-10">
+        {/* Page Header with Dithered Grid */}
+        <DitheredHeader gradientHeight="120%"
+          fade="bottom"
+          accent="#d4d4d8"
+          className="py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm text-center"
+        >
+          <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+              {title}
+            </h1>
+          </div>
+        </DitheredHeader>
+
         {/* Featured Hero */}
         <VideographyHero
           data={data?.videoShowcase}
           activeVideo={activeHeroVideo}
-          onOpenDetail={handleOpenDetail}
         />
 
         {/* Main Content Area - Category Rows */}
@@ -117,13 +119,6 @@ export function VideographyClient({ data }: VideographyClientProps) {
           ))}
         </div>
       </div>
-
-      {/* Video Detail Modal with YouTube Player */}
-      <VideoDetailModal
-        video={modalVideo}
-        isOpen={isModalOpen}
-        onClose={handleCloseDetail}
-      />
     </div>
   );
 }

@@ -156,20 +156,32 @@ export function VideoPlaylist({
       }
 
       if (playerRef.current) {
-        playerRef.current.loadVideoById({
-          videoId: currentVideoId,
-          startSeconds: 0,
-        });
-        if (isMuted) {
-          playerRef.current.mute();
+        if (typeof playerRef.current.loadVideoById === "function") {
+          try {
+            playerRef.current.loadVideoById({
+              videoId: currentVideoId,
+              startSeconds: 0,
+            });
+            if (isMuted) {
+              playerRef.current.mute?.();
+            } else {
+              playerRef.current.unMute?.();
+              playerRef.current.setVolume?.(volume);
+            }
+            playerRef.current.playVideo?.();
+            setIsPlaying(true);
+            return;
+          } catch (err) {
+            console.warn("Failed to switch video:", err);
+          }
         } else {
-          playerRef.current.unMute();
-          playerRef.current.setVolume(volume);
+          // Player instance sudah ada tapi YouTube API belum selesai inisialisasi (belum onReady)
+          pollInterval = setTimeout(initPlayer, 100);
+          return;
         }
-        playerRef.current.playVideo();
-        setIsPlaying(true);
-        return;
       }
+
+      if (!iframeContainerRef.current) return;
 
       // Create new player with autoplay=1 & mute=1
       playerRef.current = new window.YT.Player(iframeContainerRef.current, {
@@ -188,23 +200,27 @@ export function VideoPlaylist({
         },
         events: {
           onReady: (event: any) => {
-            const dur = event.target.getDuration();
-            setDuration(dur || 0);
-            event.target.mute(); // Mute saat awal agar autoplay lolos
-            setIsMuted(true);
-            event.target.playVideo();
-            setIsPlaying(true);
+            try {
+              const dur = event.target.getDuration();
+              setDuration(dur || 0);
+              event.target.mute(); // Mute saat awal agar autoplay lolos
+              setIsMuted(true);
+              event.target.playVideo();
+              setIsPlaying(true);
+            } catch { }
           },
           onStateChange: (event: any) => {
-            if (event.data === 1) {
-              setIsPlaying(true);
-              setDuration(event.target.getDuration() || 0);
-            } else if (event.data === 2) {
-              setIsPlaying(false);
-            } else if (event.data === 0) {
-              setIsPlaying(false);
-              handleNextVideo();
-            }
+            try {
+              if (event.data === 1) {
+                setIsPlaying(true);
+                setDuration(event.target.getDuration() || 0);
+              } else if (event.data === 2) {
+                setIsPlaying(false);
+              } else if (event.data === 0) {
+                setIsPlaying(false);
+                handleNextVideo();
+              }
+            } catch { }
           },
         },
       });
@@ -301,7 +317,11 @@ export function VideoPlaylist({
     const clientX = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const targetTime = ratio * duration;
-    playerRef.current.seekTo(targetTime, true);
+    try {
+      if (typeof playerRef.current.seekTo === "function") {
+        playerRef.current.seekTo(targetTime, true);
+      }
+    } catch { }
     setCurrentTime(targetTime);
   };
 

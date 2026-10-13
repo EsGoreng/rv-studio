@@ -8,6 +8,7 @@ import { CoverflowCarousel, CoverflowSlide } from "@/components/ui/coverflow-car
 import { Book } from "@/components/ui/book";
 import { COVERFLOW_SLIDES } from "@/constants/coverflow";
 import { resolveImageUrl } from "@/sanity/lib/image";
+import { DitheredHeader } from "../ui/dithered-grid";
 
 export interface CoverflowSectionProps {
   title?: string;
@@ -182,14 +183,22 @@ export function CoverflowSection({
 
   return (
     <section id="yearbook" className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden scroll-mt-12">
-      <div className="flex flex-col items-center text-center mb-6 sm:mb-10">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
-          {title}
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
-          {description}
-        </p>
-      </div>
+
+      <DitheredHeader
+        gradientHeight="120%"
+        fade="bottom"
+        accent="#d4d4d8"
+        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm "
+      >
+        <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+            {title}
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
+            {description}
+          </p>
+        </div>
+      </DitheredHeader>
 
       {!hasValidSlides ? (
         <CoverflowFallbackGrid slides={[]} />

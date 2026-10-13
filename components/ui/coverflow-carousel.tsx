@@ -68,6 +68,9 @@ export interface CoverflowSlide {
   width?: number;
   height?: number;
   meta?: { label: string; value: string }[];
+  pdfUrl?: string;
+  description?: string;
+  id?: string;
 }
 
 export interface CoverflowCarouselProps {
@@ -96,6 +99,9 @@ export interface CoverflowCarouselProps {
   label?: string;
   className?: string;
   cardClassName?: string;
+  activeIndex?: number;
+  onActiveChange?: (index: number) => void;
+  onSlideClick?: (slide: CoverflowSlide, index: number) => void;
 }
 
 export function CoverflowCarousel({
@@ -115,6 +121,9 @@ export function CoverflowCarousel({
   label = "Cover carousel",
   className,
   cardClassName,
+  activeIndex,
+  onActiveChange,
+  onSlideClick,
 }: CoverflowCarouselProps) {
   const count = slides.length;
 
@@ -135,7 +144,7 @@ export function CoverflowCarousel({
     t: number;
   } | null>(null);
 
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = React.useState(activeIndex ?? 0);
   const [detectedRatios, setDetectedRatios] = React.useState<Record<number, number>>({});
 
   const getSlideRatio = React.useCallback(
@@ -197,7 +206,9 @@ export function CoverflowCarousel({
     (target: number) => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       targetRef.current = target;
-      setSelected(indexAt(target));
+      const targetIndex = indexAt(target);
+      setSelected(targetIndex);
+      onActiveChange?.(targetIndex);
 
       const step = () => {
         const remaining = target - posRef.current;
@@ -215,7 +226,7 @@ export function CoverflowCarousel({
       };
       rafRef.current = requestAnimationFrame(step);
     },
-    [indexAt, paint],
+    [indexAt, onActiveChange, paint],
   );
 
   const clamp = React.useCallback(
@@ -270,7 +281,10 @@ export function CoverflowCarousel({
     drag.t = now;
 
     const index = indexAt(posRef.current);
-    if (index !== selected) setSelected(index);
+    if (index !== selected) {
+      setSelected(index);
+      onActiveChange?.(index);
+    }
     paint();
   };
 
@@ -308,6 +322,17 @@ export function CoverflowCarousel({
     },
     [],
   );
+
+  React.useEffect(() => {
+    if (
+      activeIndex !== undefined &&
+      activeIndex !== selected &&
+      activeIndex >= 0 &&
+      activeIndex < count
+    ) {
+      goTo(activeIndex);
+    }
+  }, [activeIndex, count, goTo, selected]);
 
   const active = slides[selected];
 
@@ -368,8 +393,15 @@ export function CoverflowCarousel({
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`${index + 1} of ${count}`}
+                  onClick={() => {
+                    if (index !== selected) {
+                      goTo(index);
+                    } else {
+                      onSlideClick?.(slide, index);
+                    }
+                  }}
                   className={cn(
-                    "absolute left-1/2 top-0 will-change-transform",
+                    "absolute left-1/2 top-0 will-change-transform cursor-pointer",
                     cardClassName,
                   )}
                   style={{

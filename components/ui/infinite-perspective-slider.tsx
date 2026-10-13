@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(SplitText);
 
@@ -335,6 +336,7 @@ export interface InfinitePerspectiveSliderCompProps {
   textEnterDuration?: number;
   textLeaveDuration?: number;
   textStagger?: number;
+  className?: string;
 }
 
 function InfinitePerspectiveSliderComp({
@@ -354,6 +356,7 @@ function InfinitePerspectiveSliderComp({
   textEnterDuration = 0.35,
   textLeaveDuration = 0.35,
   textStagger = 0.06,
+  className,
 }: InfinitePerspectiveSliderCompProps) {
   const stripRef = useRef<HTMLDivElement | null>(null);
   const settersRef = useRef<CardSetter[]>([]);
@@ -895,7 +898,7 @@ function InfinitePerspectiveSliderComp({
   }, [images]);
 
   return (
-    <div className="relative min-h-[600px] h-[75vh] w-full overflow-hidden">
+    <div className={cn("relative w-full overflow-hidden py-1 sm:py-2", className)}>
       {sideFade && (
         <>
           <div
@@ -909,7 +912,7 @@ function InfinitePerspectiveSliderComp({
         </>
       )}
 
-      <div className="pointer-events-none relative flex h-full items-center overflow-hidden max-[1025px]:items-center" style={{ perspective }}>
+      <div className="pointer-events-none relative flex items-center overflow-hidden" style={{ perspective, minHeight: cardHeight }}>
         <div
           ref={stripRef}
           className="transform-3d relative w-full"
@@ -1000,11 +1003,12 @@ export interface InfinitePerspectiveSliderProps {
   textEnterDuration?: number;
   textLeaveDuration?: number;
   textStagger?: number;
+  className?: string;
 }
 
-export function InfinitePerspectiveSlider(props: InfinitePerspectiveSliderProps) {
+export function InfinitePerspectiveSlider({ className, ...props }: InfinitePerspectiveSliderProps) {
   return (
-    <div className="flex w-full flex-col justify-center bg-background">
+    <div className={cn("flex w-full flex-col justify-center bg-transparent", className)}>
       <InfinitePerspectiveSliderComp {...props} />
     </div>
   );

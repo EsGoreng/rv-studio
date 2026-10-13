@@ -1,7 +1,6 @@
 import { Hero } from "@/components/blocks/hero";
 import { VideoShowcaseSection } from "@/components/blocks/video-showcase";
 import { ShowcaseGallerySection } from "@/components/blocks/showcase-gallery-section";
-import { GallerySection } from "@/components/blocks/gallery-section";
 import { CoverflowSection } from "@/components/blocks/coverflow-section";
 import { FAQSection } from "@/components/blocks/faq";
 import { getHomePageData } from "@/sanity/lib/queries";
@@ -14,7 +13,6 @@ export default async function Home() {
       <Hero data={sanityData?.hero} />
       <VideoShowcaseSection data={sanityData?.videoShowcase} />
       <ShowcaseGallerySection data={sanityData?.showcaseGallery} />
-      {/* <GallerySection data={sanityData?.gallery} /> */}
       <CoverflowSection data={sanityData?.coverflow} />
       <FAQSection data={sanityData?.faq} />
     </>

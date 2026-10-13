@@ -3,17 +3,15 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InfinitePerspectiveSlider } from "@/components/ui/infinite-perspective-slider";
-import { GALLERY_ITEMS } from "@/constants/gallery";
+import { GALLERY_ITEMS, type GalleryItem } from "@/constants/gallery";
 import { resolveImageUrl } from "@/sanity/lib/image";
-import type { GalleryItem } from "@/components/ui/project-filter-gallery";
+import { DitheredHeader } from "../ui/dithered-grid";
 
 export interface ShowcaseGallerySectionProps {
   title?: string;
   description?: string;
   items?: GalleryItem[];
   data?: {
-    title?: string;
-    description?: string;
     items?: Array<{
       _key?: string;
       title?: string;
@@ -31,9 +29,8 @@ export function ShowcaseGallerySection({
   items: propItems,
   data,
 }: ShowcaseGallerySectionProps) {
-  const title = data?.title ?? propTitle ?? "Showcase Gallery";
+  const title = propTitle ?? "Showcase Gallery";
   const description =
-    data?.description ??
     propDescription ??
     "Sorotan visual interaktif dan dokumentasi terpilih kami.";
 
@@ -72,16 +69,23 @@ export function ShowcaseGallerySection({
   return (
     <section
       id="showcase-gallery"
-      className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-mt-12 overflow-hidden"
+      className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-12 overflow-hidden"
     >
-      <div className="flex flex-col items-center text-center mb-10 sm:mb-12">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
-          {title}
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
-          {description}
-        </p>
-      </div>
+      <DitheredHeader
+        gradientHeight="120%"
+        fade="bottom"
+        accent="#d4d4d8"
+        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm mb-4 sm:mb-6"
+      >
+        <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+            {title}
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
+            {description}
+          </p>
+        </div>
+      </DitheredHeader>
 
       <InfinitePerspectiveSlider
         images={sliderImages}
@@ -94,7 +98,7 @@ export function ShowcaseGallerySection({
         maxRotation={80}
       />
 
-      <div className="mt-8 sm:mt-10 flex justify-center">
+      <div className="mt-4 sm:mt-6 flex justify-center">
         <Button asChild size="lg" className="group rounded-full px-6 font-medium shadow-sm transition-all hover:shadow-md">
           <Link href="/photography">
             Lihat Semua Foto

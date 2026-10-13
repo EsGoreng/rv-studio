@@ -1,4 +1,9 @@
-import type { GalleryItem } from "@/components/ui/project-filter-gallery";
+export interface GalleryItem {
+  src: string;
+  alt?: string;
+  title?: string;
+  category?: string;
+}
 
 export interface ProjectPhoto {
   id: string;

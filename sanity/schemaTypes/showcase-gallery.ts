@@ -6,19 +6,6 @@ export const showcaseGalleryType = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "title",
-      title: "Section Title",
-      type: "string",
-      initialValue: "Showcase Gallery",
-    }),
-    defineField({
-      name: "description",
-      title: "Section Description",
-      type: "text",
-      rows: 3,
-      initialValue: "Eksplorasi interaktif visual sinematik dan portfolio unggulan kami.",
-    }),
-    defineField({
       name: "items",
       title: "Showcase Items",
       type: "array",
