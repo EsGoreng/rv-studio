@@ -16,7 +16,6 @@ export interface VideographyRowProps {
       title?: string;
       description?: string;
       category?: string;
-      duration?: string;
       videoSrc?: string;
       thumbnail?: any;
       externalThumbnail?: string;
@@ -51,7 +50,6 @@ export function VideographyRow({
             id: item._key || String(index + 1),
             title: item.title || fallback?.title || `Video ${index + 1}`,
             description: item.description || fallback?.description || "",
-            duration: item.duration || "YouTube",
             thumbnail: thumb,
             videoSrc: item.videoSrc || fallback?.videoSrc || "",
             category: item.category || fallback?.category,
@@ -197,13 +195,6 @@ function VideoCard({
         {showBadge && badgeLabel && (
           <div className="absolute bottom-1.5 left-1.5 z-10 bg-[#E50914] text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-[2px] shadow-md">
             {badgeLabel}
-          </div>
-        )}
-
-        {/* Duration Chip on Top-Right (hanya tampil jika bukan YouTube) */}
-        {item.duration && item.duration.toLowerCase() !== "youtube" && (
-          <div className="absolute top-1.5 right-1.5 z-10 bg-black/70 backdrop-blur-xs text-neutral-300 text-[9px] font-mono px-1.5 py-0.5 rounded">
-            {item.duration}
           </div>
         )}
       </div>

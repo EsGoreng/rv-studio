@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 export const showcaseGalleryType = defineType({
   name: "showcaseGallery",
-  title: "Showcase Gallery Section (3D Perspective Slider)",
+  title: "Showcase Gallery Section",
   type: "document",
   fields: [
     defineField({

@@ -11,7 +11,7 @@ export default function MainLayout({
     <div className="relative min-h-screen flex flex-col">
       <main className="flex-1">{children}</main>
       <BottomNavBar />
-      <DitheredFooter brand="RV STUDIO" tagline="Crafting immersive digital & visual experiences." />
+      <DitheredFooter brand="RV PROJECT" tagline="Crafting immersive digital & visual experiences." />
     </div>
   );
 }

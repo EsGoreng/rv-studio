@@ -102,7 +102,7 @@ const focus = "focus-visible:outline focus-visible:outline-2 focus-visible:outli
 const coarse = "[@media(pointer:coarse)]:inline-flex [@media(pointer:coarse)]:min-h-11 [@media(pointer:coarse)]:items-center";
 
 export default function DitheredFooter({
-    brand = "RV Studio",
+    brand = "RV Project",
     brandHref = "/",
     tagline = "Layanan produksi visual, fotografi kreatif, videography sinematik, dan buku tahunan profesional.",
     columns = DEFAULT_COLUMNS,

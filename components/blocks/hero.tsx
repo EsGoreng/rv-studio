@@ -63,7 +63,7 @@ export function Hero({
       aspectRatio={16 / 10}
       fade={12}
       autoPlay={true}
-      className="relative min-h-[100svh] h-[100dvh] w-full bg-background overflow-hidden"
+      className="relative min-h-[100svh] h-[100dvh] mt-10 md:mt-5 lg:mt-3 w-full bg-background overflow-hidden"
     >
       {/* Ambient background glow */}
       <div
@@ -80,15 +80,15 @@ export function Hero({
               {/* Ambient radial glow behind the badge logo */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -inset-3 sm:-inset-4 rounded-full bg-primary/20 blur-xl opacity-60 dark:opacity-80 transition-opacity"
+                className="pointer-events-none absolute -inset-3 sm:-inset-3 rounded-full bg-primary/20 blur-xl opacity-30 dark:opacity-20 transition-opacity"
               />
               <Image
-                src="/logo-hero.png"
+                src="/logo-rv.png"
                 alt={title}
                 width={200}
                 height={200}
                 priority
-                className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_12px_28px_rgba(255,255,255,0.08)] select-none transition-transform duration-300 hover:scale-105 active:scale-95"
+                className="relative z-10 w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_12px_28px_rgba(255,255,255,0.08)] select-none transition-transform duration-300 hover:scale-105 active:scale-95"
               />
             </div>
           </h1>

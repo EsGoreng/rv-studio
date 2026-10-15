@@ -23,14 +23,6 @@ export const galleryType = defineType({
               name: "category",
               title: "Category",
               type: "string",
-              options: {
-                list: [
-                  { title: "Yearbook", value: "Yearbook" },
-                  { title: "Photography", value: "Photography" },
-                  { title: "Videography", value: "Videography" },
-                  { title: "Corporate", value: "Corporate" },
-                ],
-              },
               validation: (rule) => rule.required(),
             }),
             defineField({
@@ -38,16 +30,6 @@ export const galleryType = defineType({
               title: "Image",
               type: "image",
               options: { hotspot: true },
-            }),
-            defineField({
-              name: "externalSrc",
-              title: "External Image URL (Fallback)",
-              type: "url",
-            }),
-            defineField({
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
             }),
           ],
           preview: {

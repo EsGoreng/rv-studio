@@ -13,7 +13,6 @@ import {
   ListVideo,
   PanelRightClose,
   PanelRightOpen,
-  Clock,
   Search,
   X,
   Filter,
@@ -782,10 +781,6 @@ export function VideoPlaylist({
                                 </div>
                               </div>
                             )}
-                            <span className="absolute bottom-1 right-1 px-1 py-0.5 rounded bg-black/75 text-[9px] font-mono text-white flex items-center gap-0.5">
-                              <Clock className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
-                              {item.duration}
-                            </span>
                           </div>
 
                           {/* Metadata & Description */}

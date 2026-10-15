@@ -29,22 +29,7 @@ export const videoShowcaseType = defineType({
               name: "category",
               title: "Category",
               type: "string",
-              options: {
-                list: [
-                  { title: "Profil Instansi", value: "Profil Instansi" },
-                  { title: "Graduation Video", value: "Graduation Video" },
-                  { title: "Commercial Video", value: "Commercial Video" },
-                  { title: "Aftermovie", value: "Aftermovie" },
-                  { title: "Other", value: "Other" },
-                ],
-              },
-            }),
-            defineField({
-              name: "duration",
-              title: "Duration Label",
-              type: "string",
-              description: 'e.g. "YouTube", "3:45"',
-              initialValue: "YouTube",
+              description: "e.g. Profil Instansi, Graduation Video, Aftermovie",
             }),
             defineField({
               name: "videoSrc",

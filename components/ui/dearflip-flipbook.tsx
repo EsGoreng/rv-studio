@@ -4,6 +4,18 @@ import * as React from "react";
 import { Loader2, RefreshCw, ExternalLink, Volume2, VolumeX, Eye, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Global polyfill for Promise.try (required by modern PDF.js builds if running in environments without native Promise.try)
+if (typeof window !== "undefined") {
+  const winPromise = window.Promise as unknown as {
+    try?: (fn: (...args: unknown[]) => unknown, ...args: unknown[]) => Promise<unknown>;
+  };
+  if (typeof winPromise.try !== "function") {
+    winPromise.try = function (fn: (...args: unknown[]) => unknown, ...args: unknown[]) {
+      return new Promise((resolve) => resolve(fn(...args)));
+    };
+  }
+}
+
 // Global script loading promise to prevent duplicate loading
 let dearFlipLoadPromise: Promise<void> | null = null;
 
@@ -61,19 +73,66 @@ export function loadDearFlipLibraries(): Promise<void> {
       (window as unknown as { dFlipLocation: string }).dFlipLocation = "/dflip/";
 
       // 3. Load jQuery first
-      const win = window as unknown as { jQuery?: unknown; $: unknown };
+      const win = window as unknown as {
+        jQuery?: unknown;
+        $: unknown;
+        THREE?: unknown;
+        MOCKUP?: unknown;
+        pdfjsWorker?: unknown;
+        pdfjsLib?: { GlobalWorkerOptions?: { workerSrc?: string } };
+        DFLIP?: { defaults?: Record<string, unknown> };
+      };
+
       if (!win.jQuery) {
         await loadScript("/dflip/js/libs/jquery.min.js");
       }
 
-      // 4. Load DearFlip main library
+      // 4. Preload Three.js, Mockup.js, PDF.worker, and PDF.js to avoid relative 404 path issues on sub-routes
+      if (!win.THREE) {
+        await loadScript("/dflip/js/libs/three.min.js");
+      }
+
+      if (!win.MOCKUP) {
+        await loadScript("/dflip/js/libs/mockup.min.js");
+      }
+
+      // Preload worker to expose window.pdfjsWorker.WorkerMessageHandler
+      if (!win.pdfjsWorker) {
+        await loadScript("/dflip/js/libs/pdf.worker.min.js");
+      }
+
+      if (!win.pdfjsLib) {
+        await loadScript("/dflip/js/libs/pdf.min.js");
+      }
+
+      // Configure PDF.js worker
+      if (win.pdfjsLib?.GlobalWorkerOptions) {
+        win.pdfjsLib.GlobalWorkerOptions.workerSrc = "/dflip/js/libs/pdf.worker.min.js";
+      }
+
+      // 5. Load DearFlip main library
       const winDF = window as unknown as {
-        DFLIP?: unknown;
+        DFLIP?: { defaults?: Record<string, unknown> };
         jQuery?: { fn?: { flipBook?: unknown } };
       };
 
       if (!winDF.DFLIP || !winDF.jQuery?.fn?.flipBook) {
         await loadScript("/dflip/js/dflip.min.js");
+      }
+
+      // 6. Explicitly set absolute asset paths on DFLIP defaults
+      if (winDF.DFLIP?.defaults) {
+        Object.assign(winDF.DFLIP.defaults, {
+          mockupjsSrc: "/dflip/js/libs/mockup.min.js",
+          pdfjsSrc: "/dflip/js/libs/pdf.min.js",
+          pdfjsCompatibilitySrc: "/dflip/js/libs/compatibility.js",
+          threejsSrc: "/dflip/js/libs/three.min.js",
+          pdfjsWorkerSrc: "/dflip/js/libs/pdf.worker.min.js",
+          soundFile: "/dflip/sound/turn2.mp3",
+          imagesLocation: "/dflip/images",
+          imageResourcesPath: "/dflip/images/pdfjs/",
+          cMapUrl: "/dflip/js/libs/cmaps/",
+        });
       }
 
       resolve();
@@ -188,6 +247,17 @@ export function DearFlipViewer({
           autoPlay: false,
           enableDownload: true,
           duration: 750,
+          disableRange: true,
+          disableAutoFetch: false,
+          mockupjsSrc: "/dflip/js/libs/mockup.min.js",
+          pdfjsSrc: "/dflip/js/libs/pdf.min.js",
+          pdfjsCompatibilitySrc: "/dflip/js/libs/compatibility.js",
+          threejsSrc: "/dflip/js/libs/three.min.js",
+          pdfjsWorkerSrc: "/dflip/js/libs/pdf.worker.min.js",
+          soundFile: "/dflip/sound/turn2.mp3",
+          imagesLocation: "/dflip/images",
+          imageResourcesPath: "/dflip/images/pdfjs/",
+          cMapUrl: "/dflip/js/libs/cmaps/",
           allControls:
             "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen,download,more,pageMode,startPage,endPage,sound",
           moreControls: "download,pageMode,startPage,endPage,sound",

@@ -45,10 +45,12 @@ export function ShowcaseGallerySection({
           item.externalSrc || fallback?.src
         );
 
+        const title = item.title || fallback?.title || `Showcase ${index + 1}`;
+
         return {
           src,
-          alt: item.alt || item.title || fallback?.alt || "Showcase image",
-          title: item.title || fallback?.title || `Showcase ${index + 1}`,
+          alt: title,
+          title,
           category: item.category || fallback?.category || "Photography",
         };
       });

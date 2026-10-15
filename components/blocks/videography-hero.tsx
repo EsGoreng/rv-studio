@@ -25,7 +25,6 @@ export interface VideographyHeroProps {
       title?: string;
       description?: string;
       category?: string;
-      duration?: string;
       videoSrc?: string;
       thumbnail?: any;
       externalThumbnail?: string;
@@ -74,7 +73,6 @@ export function VideographyHero({
             id: item._key || String(index + 1),
             title: item.title || fallback?.title || `Video ${index + 1}`,
             description: item.description || fallback?.description || "",
-            duration: item.duration || "YouTube",
             thumbnail: thumb,
             videoSrc: item.videoSrc || fallback?.videoSrc || "",
             category: item.category || fallback?.category,

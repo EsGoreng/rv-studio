@@ -34,12 +34,14 @@ export function PhotographyClient({ data }: PhotographyClientProps) {
           item.externalSrc || fallback?.src
         );
 
+        const title = item.title || fallback?.title || `Photo ${index + 1}`;
+
         return {
           id: item._key || `photo-${index + 1}`,
-          title: item.title || fallback?.title || `Photo ${index + 1}`,
+          title,
           category: (item.category as PhotographyItem["category"]) || fallback?.category || "Portrait",
           src,
-          alt: item.alt || item.title || fallback?.alt || "RV Studio Photography",
+          alt: title,
         };
       });
     }

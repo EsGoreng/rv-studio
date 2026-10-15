@@ -16,7 +16,6 @@ export const HOME_PAGE_QUERY = `{
       title,
       description,
       category,
-      duration,
       videoSrc,
       thumbnail,
       externalThumbnail
@@ -38,8 +37,7 @@ export const HOME_PAGE_QUERY = `{
       title,
       category,
       image,
-      externalSrc,
-      alt
+      "alt": title
     }
   },
   "coverflow": *[_type == "coverflow"][0]{
@@ -47,6 +45,7 @@ export const HOME_PAGE_QUERY = `{
       _key,
       title,
       subtitle,
+      description,
       color,
       image {
         ...,
@@ -63,6 +62,7 @@ export const HOME_PAGE_QUERY = `{
         }
       },
       externalSrc,
+      "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
       alt,
       meta[]{
         _key,
@@ -110,7 +110,6 @@ export interface HomePageSanityData {
       title?: string;
       description?: string;
       category?: string;
-      duration?: string;
       videoSrc?: string;
       thumbnail?: any;
       externalThumbnail?: string;
@@ -143,7 +142,9 @@ export interface HomePageSanityData {
       _key?: string;
       title?: string;
       subtitle?: string;
+      description?: string;
       color?: string;
+      pdfUrl?: string;
       image?: any;
       externalSrc?: string;
       alt?: string;
@@ -208,7 +209,6 @@ export const VIDEOGRAPHY_PAGE_QUERY = `{
       title,
       description,
       category,
-      duration,
       videoSrc,
       thumbnail,
       externalThumbnail
@@ -247,8 +247,7 @@ export const PHOTOGRAPHY_PAGE_QUERY = `{
       title,
       category,
       image,
-      externalSrc,
-      alt
+      "alt": title
     }
   }
 }`;
@@ -279,14 +278,12 @@ export async function getPhotographyPageData(): Promise<PhotographyPageSanityDat
 
 export const YEARBOOK_PAGE_QUERY = `{
   "coverflow": *[_type == "coverflow"][0]{
-    title,
-    description,
     slides[]{
       _key,
       title,
       subtitle,
       description,
-      pdfUrl,
+      "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
       color,
       image {
         ...,

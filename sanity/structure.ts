@@ -3,7 +3,7 @@ import type { StructureResolver } from "sanity/structure";
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title("RV Studio Content")
+    .title("RV Content")
     .items([
       S.listItem()
         .title("Hero")
@@ -11,7 +11,7 @@ export const structure: StructureResolver = (S) =>
         .child(S.document().schemaType("hero").documentId("hero")),
 
       S.listItem()
-        .title("Video Showcase")
+        .title("Video")
         .id("videoShowcase")
         .child(
           S.document()

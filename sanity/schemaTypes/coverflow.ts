@@ -25,6 +25,12 @@ export const coverflowType = defineType({
               type: "string",
             }),
             defineField({
+              name: "description",
+              title: "Book Description",
+              type: "text",
+              rows: 3,
+            }),
+            defineField({
               name: "color",
               title: "Book Cover Color (Hex)",
               type: "string",
@@ -41,6 +47,21 @@ export const coverflowType = defineType({
               name: "externalSrc",
               title: "External Image URL (Fallback)",
               type: "url",
+            }),
+            defineField({
+              name: "pdfFile",
+              title: "PDF File (Flipbook)",
+              type: "file",
+              description: "Upload file PDF buku kenangan untuk preview 3D Flipbook",
+              options: {
+                accept: ".pdf,application/pdf",
+              },
+            }),
+            defineField({
+              name: "pdfUrl",
+              title: "External PDF URL (Fallback)",
+              type: "url",
+              description: "URL alternatif berkas PDF jika disimpan di server eksternal",
             }),
             defineField({
               name: "alt",

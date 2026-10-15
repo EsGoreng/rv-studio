@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { X, ExternalLink, BookOpen, Sparkles, Download } from "lucide-react";
+import { X, ExternalLink, BookOpen, Download } from "lucide-react";
 import { DearFlipViewer } from "@/components/ui/dearflip-flipbook";
-import type { YearbookItem } from "@/constants/yearbook";
+import type { YearbookItem } from "@/components/blocks/yearbook-client";
 
 export interface YearbookPreviewModalProps {
   isOpen: boolean;
@@ -44,24 +44,11 @@ export function YearbookPreviewModal({
         {/* Top Header Bar */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-neutral-900/80 backdrop-blur-md">
           <div className="flex items-center gap-3 min-w-0">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center border border-white/20 shrink-0 shadow-inner"
-              style={{
-                background: `linear-gradient(135deg, ${yearbook.color || "#1e293b"} 0%, #000 100%)`,
-              }}
-            >
-              <BookOpen className="w-4 h-4 text-white" />
-            </div>
-
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h3 className="text-sm sm:text-base font-semibold text-white truncate">
                   {yearbook.title}
                 </h3>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-neutral-300 border border-white/10">
-                  <Sparkles className="w-2.5 h-2.5 text-amber-400" />
-                  3D Interactive Flipbook
-                </span>
               </div>
               <p className="text-xs text-neutral-400 truncate">
                 {yearbook.subtitle || yearbook.institution}
@@ -110,15 +97,29 @@ export function YearbookPreviewModal({
 
         {/* Modal Flipbook Body */}
         <div className="relative flex-1 w-full h-[calc(100%-65px)] bg-black/60 overflow-hidden">
-          <DearFlipViewer
-            source={yearbook.pdfUrl || "/dflip/books/intro.pdf"}
-            bookTitle={yearbook.title}
-            height="100%"
-            webgl={true}
-            sound={true}
-            showCustomBar={false}
-            className="w-full h-full rounded-none border-none bg-transparent"
-          />
+          {yearbook.pdfUrl ? (
+            <DearFlipViewer
+              source={yearbook.pdfUrl}
+              bookTitle={yearbook.title}
+              height="100%"
+              webgl={true}
+              sound={true}
+              showCustomBar={false}
+              className="w-full h-full rounded-none border-none bg-transparent"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
+              <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <BookOpen className="w-7 h-7 text-neutral-400" />
+              </div>
+              <h4 className="text-base font-semibold text-white">
+                Berkas PDF Belum Tersedia
+              </h4>
+              <p className="text-xs sm:text-sm text-neutral-400 max-w-sm">
+                Buku kenangan ini belum memiliki berkas PDF yang diunggah di Sanity Studio.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
