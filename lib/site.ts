@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "RV Studio",
-  shortName: "RV Studio",
+  name: "RV Project",
+  shortName: "RV Project",
   legalName: "RV Project Visual Production",
   description:
-    "Creative visual production house spesialis pembuatan buku tahunan sekolah (yearbook), fotografi wisuda & personal, serta produksi video sinematik berkualitas tinggi berbasis di Jawa Barat.",
+    "Jasa pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif di Jawa Barat.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://rvproject.id",
   ogImage: "/og-image.png",
   studioBase: "Kuningan, Jawa Barat, Indonesia",
@@ -16,7 +16,6 @@ export const siteConfig = {
   keywords: [
     "Buku Tahunan Sekolah",
     "Yearbook Organizer",
-    "RV Studio",
     "RV Project",
     "Vendor Buku Kenangan SMA",
     "Vendor Buku Tahunan Kuningan",
@@ -31,7 +30,7 @@ export const siteConfig = {
     "Dokumentasi Acara Sekolah",
   ],
   author: {
-    name: "RV Studio Team",
+    name: "RV Project Team",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://rvproject.id",
   },
 };

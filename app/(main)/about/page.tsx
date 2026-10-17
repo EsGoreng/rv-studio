@@ -15,23 +15,23 @@ import { getBreadcrumbSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "About Us | Profil RV Studio & Rekam Jejak Visual",
+  title: "About RV Project",
   description:
-    "Kenali RV Studio (RV Project) lebih dekat — Creative visual production house spesialis pembuatan buku tahunan sekolah, fotografi wisuda & personal, serta videografi sinematik berbasis di Kuningan, Jawa Barat.",
+    "Profil RV Project, studio visual di Jawa Barat untuk buku tahunan sekolah, foto wisuda, dan produksi video.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About Us | Profil & Layanan Kreatif RV Studio",
+    title: "About RV Project",
     description:
-      "Creative visual production house spesialis pembuatan buku tahunan sekolah, fotografi, dan videografi sinematik berkualitas tinggi.",
+      "Profil RV Project, studio visual di Jawa Barat untuk buku tahunan sekolah, foto wisuda, dan produksi video.",
     url: `${siteConfig.url}/about`,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "About RV Studio",
+        alt: "About RV Project",
       },
     ],
   },
@@ -74,7 +74,7 @@ export default function AboutPage() {
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: "About RV Studio",
+    name: "About RV Project",
     description: siteConfig.description,
     url: `${siteConfig.url}/about`,
     mainEntity: {
@@ -116,7 +116,7 @@ export default function AboutPage() {
             <div className="space-y-4 text-muted-foreground leading-relaxed text-sm sm:text-base">
               {/* 40-60 word extractable passage for AI engines */}
               <p className="text-foreground/90 font-medium">
-                RV Studio (RV Project) adalah creative visual production house spesialis pembuatan buku tahunan sekolah (yearbook organizer), fotografi wisuda & personal, serta produksi video sinematik komersial. Berbasis di Kuningan, Jawa Barat, kami melayani institusi pendidikan dan klien di wilayah Ciayumajakuning maupun seluruh Indonesia.
+                RV Project adalah creative visual production house spesialis pembuatan buku tahunan sekolah (yearbook organizer), fotografi wisuda & personal, serta produksi video sinematik komersial. Berbasis di Kuningan, Jawa Barat, kami melayani institusi pendidikan dan klien di wilayah Ciayumajakuning maupun seluruh Indonesia.
               </p>
               <p>
                 Berawal dari dedikasi mendalam pada seni visual, kami mendampingi setiap langkah produksi mulai dari perancangan konsep tema, penyusunan moodboard, pengarahan gaya (art direction), hingga proses cetak fisik premium dan penerbitan digital 3D interactive flipbook.
@@ -158,7 +158,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
               Diskusikan ide kreatif, konsep buku tahunan, atau kebutuhan sesi foto
-              & video Anda bersama tim RV Studio. Kami siap mewujudkannya.
+              & video Anda bersama tim RV Project. Kami siap mewujudkannya.
             </p>
           </div>
 

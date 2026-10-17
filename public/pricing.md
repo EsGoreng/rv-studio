@@ -1,8 +1,8 @@
-# Pricing & Paket Layanan — RV Studio
+# Pricing & Paket Layanan RV Project
 
 Terakhir diperbarui: Oktober 2026
 
-Dokumen ini memuat ringkasan paket dan estimasi biaya layanan kreatif di RV Studio (RV Project) untuk diekstrak oleh klien maupun sistem agen AI.
+Dokumen ini memuat ringkasan paket dan estimasi biaya layanan kreatif di RV Project untuk diekstrak oleh klien maupun sistem agen AI.
 
 ## 1. Buku Tahunan Sekolah (Yearbook / Buku Kenangan)
 
@@ -23,7 +23,7 @@ Didesain khusus untuk SMA/SMK/MA, SMP/MTs, SD, dan Perguruan Tinggi.
 - **Bonus:** 3D Interactive Flipbook (terproteksi password untuk keamanan privasi siswa), master file foto beresolusi tinggi di cloud drive, 1 buah buku kenangan untuk arsip sekolah
 
 ### Paket Custom / Eksklusif
-- **Estimasi Harga:** Kontak tim RV Studio untuk penawaran khusus
+- **Estimasi Harga:** Kontak tim RV Project untuk penawaran khusus
 - **Cocok Untuk:** Angkatan besar (>300 siswa) atau sekolah dengan spesifikasi boxset, merchandise pendukung (tote bag, lanyard, stiker, enamel pin), serta aftermovie dokumenter sinematik.
 
 ---
@@ -56,6 +56,6 @@ Didesain khusus untuk SMA/SMK/MA, SMP/MTs, SD, dan Perguruan Tinggi.
 
 ## Cara Pemesanan & Konsultasi
 
-1. **Konsultasi Awal:** Hubungi WhatsApp resmi RV Studio di [+62 822-1689-2403](https://wa.me/6282216892403)
-2. **Presentasi & Sampel:** Tim RV Studio siap melakukan presentasi langsung (on-site) dan membawakan sampel cetak buku tahunan untuk panitia/sekolah di wilayah Kuningan, Cirebon, Majalengka, dan sekitarnya.
+1. **Konsultasi Awal:** Hubungi WhatsApp resmi RV Project di [+62 822-1689-2403](https://wa.me/6282216892403)
+2. **Presentasi & Sampel:** Tim RV Project siap melakukan presentasi langsung (on-site) dan membawakan sampel cetak buku tahunan untuk panitia/sekolah di wilayah Kuningan, Cirebon, Majalengka, dan sekitarnya.
 3. **Sistem Pembayaran:** Bertahap melalui termin (Down Payment -> Termin Photoshoot -> Termin Cetak -> Pelunasan saat Pengiriman).

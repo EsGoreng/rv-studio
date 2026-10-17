@@ -6,23 +6,23 @@ import { getBreadcrumbSchema, getServiceSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Buku Tahunan Sekolah (Yearbook Organizer) | RV Studio",
+  title: "RV Project Yearbook",
   description:
-    "Layanan pembuatan buku tahunan sekolah & universitas terlengkap oleh RV Studio. Konsep tema kreatif, sesi photoshoot terarah, cetak hardcover premium, dan bonus digital 3D flipbook interaktif berpassword.",
+    "Pembuatan buku tahunan sekolah mulai dari konsep tema, sesi foto, cetak hardcover, sampai flipbook digital 3D interaktif.",
   alternates: {
     canonical: "/yearbook",
   },
   openGraph: {
-    title: "Buku Tahunan Sekolah & Album Kenangan | RV Studio",
+    title: "RV Project Yearbook",
     description:
-      "Vendor buku tahunan sekolah terpercaya di Kuningan & Jawa Barat. Cetak premium dengan teknologi digital 3D flipbook.",
+      "Pembuatan buku tahunan sekolah mulai dari konsep tema, sesi foto, cetak hardcover, sampai flipbook digital 3D interaktif.",
     url: `${siteConfig.url}/yearbook`,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Yearbook RV Studio",
+        alt: "RV Project Yearbook",
       },
     ],
   },

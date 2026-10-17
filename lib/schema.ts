@@ -1,7 +1,7 @@
 import { siteConfig } from "@/lib/site";
 
 /**
- * Generates the Organization & LocalBusiness schema for RV Studio.
+ * Generates the Organization & LocalBusiness schema for RV Project.
  * Complies with schema.org standards for AI extraction & Knowledge Graph representation.
  */
 export function getOrganizationSchema() {
@@ -15,7 +15,7 @@ export function getOrganizationSchema() {
     "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.name,
     legalName: siteConfig.legalName,
-    alternateName: ["RV Project", "RV Studio Kuningan"],
+    alternateName: ["RV Project"],
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",

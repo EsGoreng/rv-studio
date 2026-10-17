@@ -34,8 +34,8 @@ const netflixSans = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "RV Studio",
-    template: "%s | RV Studio",
+    default: "RV Project",
+    template: "%s",
   },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
@@ -66,20 +66,20 @@ export const metadata: Metadata = {
     locale: "id_ID",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "RV Studio — Creative Visual Production & Yearbook House",
+    title: "RV Project",
     description: siteConfig.description,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "RV Studio — Visual Production & Creative Yearbook",
+        alt: "RV Project",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RV Studio — Creative Visual Production & Yearbook House",
+    title: "RV Project",
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },

@@ -155,7 +155,7 @@ export default function DitheredFooter({
             `*Layanan:* ${service}`,
             ``,
             `*Pesan / Detail Project:*`,
-            `${message.trim() || "Halo, saya tertarik dengan portfolio RV Studio dan ingin info pricelist/detail lebih lanjut."}`,
+            `${message.trim() || "Halo, saya tertarik dengan portfolio RV Project dan ingin info pricelist/detail lebih lanjut."}`,
         ]
             .filter(Boolean)
             .join("\n");

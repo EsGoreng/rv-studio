@@ -158,7 +158,7 @@ export interface DearFlipViewerProps {
 
 export function DearFlipViewer({
   source,
-  bookTitle = "Yearbook RV Studio",
+  bookTitle = "Yearbook RV Project",
   height = "600px",
   webgl = true,
   sound = true,

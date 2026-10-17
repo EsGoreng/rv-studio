@@ -6,23 +6,23 @@ import { getBreadcrumbSchema, getServiceSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Fotografi Wisuda, Studio & Editorial Kreatif | RV Studio",
+  title: "RV Project Photography",
   description:
-    "Koleksi fotografi beresolusi tinggi karya RV Studio: sesi foto wisuda personal & grup, potret editorial, katalog brand, dan dokumentasi momen spesial dengan arahan seni visual terbaik.",
+    "Sesi foto untuk wisuda personal dan rombongan, foto studio, potret editorial, dan dokumentasi acara.",
   alternates: {
     canonical: "/photography",
   },
   openGraph: {
-    title: "Fotografi Wisuda, Studio & Editorial Kreatif | RV Studio",
+    title: "RV Project Photography",
     description:
-      "Sesi foto kreatif, portrait, wisuda, dan editorial berkualitas tinggi oleh RV Studio.",
+      "Sesi foto untuk wisuda personal dan rombongan, foto studio, potret editorial, dan dokumentasi acara.",
     url: `${siteConfig.url}/photography`,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Photography Showcase RV Studio",
+        alt: "RV Project Photography",
       },
     ],
   },

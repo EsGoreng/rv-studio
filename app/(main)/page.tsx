@@ -9,22 +9,23 @@ import { getHomePageData } from "@/sanity/lib/queries";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "RV Studio — Creative Visual Production & Yearbook House",
+  title: "RV Project",
   description:
-    "Creative visual production house spesialis pembuatan buku tahunan sekolah (yearbook organizer), fotografi wisuda, dan videografi sinematik berbasis di Kuningan, Jawa Barat.",
+    "Studio visual di Jawa Barat untuk pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "RV Studio — Creative Visual Production & Yearbook House",
-    description: siteConfig.description,
+    title: "RV Project",
+    description:
+      "Studio visual di Jawa Barat untuk pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif.",
     url: siteConfig.url,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "RV Studio Portfolio & Showcase",
+        alt: "RV Project",
       },
     ],
   },

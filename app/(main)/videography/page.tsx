@@ -6,23 +6,23 @@ import { getBreadcrumbSchema, getServiceSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Videografi Sinematik & Produksi Video Acara | RV Studio",
+  title: "RV Project Videography",
   description:
-    "Eksplorasi portofolio produksi video sinematik RV Studio: profil sekolah & instansi, aftermovie festival/pensi, short film, dan commercial teaser dengan standar 4K dan color grading profesional.",
+    "Produksi video untuk profil sekolah, aftermovie acara, film pendek, dan video promosi.",
   alternates: {
     canonical: "/videography",
   },
   openGraph: {
-    title: "Videografi Sinematik & Produksi Video Acara | RV Studio",
+    title: "RV Project Videography",
     description:
-      "Produksi video sinematik berkualitas tinggi untuk sekolah, instansi, dan acara kreatif oleh RV Studio Kuningan.",
+      "Produksi video untuk profil sekolah, aftermovie acara, film pendek, dan video promosi.",
     url: `${siteConfig.url}/videography`,
     images: [
       {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Videography Showcase RV Studio",
+        alt: "RV Project Videography",
       },
     ],
   },
