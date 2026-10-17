@@ -11,14 +11,17 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "RV Project",
   description:
-    "Studio visual di Jawa Barat untuk pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif.",
+    "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: siteConfig.name,
     title: "RV Project",
     description:
-      "Studio visual di Jawa Barat untuk pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif.",
+      "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
     url: siteConfig.url,
     images: [
       {
@@ -26,8 +29,16 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "RV Project",
+        type: "image/png",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RV Project",
+    description:
+      "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
+    images: [siteConfig.ogImage],
   },
 };
 

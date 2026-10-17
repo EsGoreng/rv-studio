@@ -1,10 +1,18 @@
+const getBaseUrl = (): string => {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "https://rvproject.id";
+};
+
 export const siteConfig = {
   name: "RV Project",
   shortName: "RV Project",
   legalName: "RV Project Visual Production",
   description:
-    "Jasa pembuatan buku tahunan sekolah, foto wisuda, dan produksi video kreatif di Jawa Barat.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://rvproject.id",
+    "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
+  url: getBaseUrl(),
   ogImage: "/og-image.png",
   studioBase: "Kuningan, Jawa Barat, Indonesia",
   telephone: "+6282216892403",

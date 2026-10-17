@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     canonical: "/photography",
   },
   openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: siteConfig.name,
     title: "RV Project Photography",
     description:
       "Sesi foto untuk wisuda personal dan rombongan, foto studio, potret editorial, dan dokumentasi acara.",
@@ -23,8 +26,16 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "RV Project Photography",
+        type: "image/png",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RV Project Photography",
+    description:
+      "Sesi foto untuk wisuda personal dan rombongan, foto studio, potret editorial, dan dokumentasi acara.",
+    images: [siteConfig.ogImage],
   },
 };
 

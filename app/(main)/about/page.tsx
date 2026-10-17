@@ -17,14 +17,17 @@ import { JsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "About RV Project",
   description:
-    "Profil RV Project, studio visual di Jawa Barat untuk buku tahunan sekolah, foto wisuda, dan produksi video.",
+    "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: siteConfig.name,
     title: "About RV Project",
     description:
-      "Profil RV Project, studio visual di Jawa Barat untuk buku tahunan sekolah, foto wisuda, dan produksi video.",
+      "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
     url: `${siteConfig.url}/about`,
     images: [
       {
@@ -32,8 +35,16 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "About RV Project",
+        type: "image/png",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About RV Project",
+    description:
+      "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
+    images: [siteConfig.ogImage],
   },
 };
 
