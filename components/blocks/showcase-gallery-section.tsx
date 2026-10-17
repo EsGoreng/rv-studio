@@ -29,10 +29,10 @@ export function ShowcaseGallerySection({
   items: propItems,
   data,
 }: ShowcaseGallerySectionProps) {
-  const title = propTitle ?? "Showcase Gallery";
+  const title = propTitle ?? "Photography";
   const description =
     propDescription ??
-    "Sorotan visual interaktif dan dokumentasi terpilih kami.";
+    "Higlight foto dari berbagai proyek.";
 
   const items: GalleryItem[] = useMemo(() => {
     if (propItems && propItems.length > 0) return propItems;
@@ -98,6 +98,9 @@ export function ShowcaseGallerySection({
         scrollSpeed={1}
         scrollLerp={0.1}
         maxRotation={80}
+        autoScroll={true}
+        autoScrollMobileOnly={true}
+        autoScrollSpeed={1.0}
       />
 
       <div className="mt-4 sm:mt-6 flex justify-center">

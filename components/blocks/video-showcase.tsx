@@ -39,7 +39,7 @@ export function VideoShowcaseSection({
   const description =
     data?.description ??
     propDescription ??
-    "Layanan produksi visual dan dokumentasi untuk berbagai kebutuhan.";
+    "Layanan dokumentasi video untuk berbagai kebutuhan.";
 
   const items: PlaylistItem[] = useMemo(() => {
     if (propItems && propItems.length > 0) return propItems;

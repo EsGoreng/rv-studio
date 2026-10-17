@@ -13,12 +13,6 @@ export const contactType = defineType({
       initialValue: "6281234567890",
     }),
     defineField({
-      name: "responseHours",
-      title: "Response Working Hours",
-      type: "string",
-      initialValue: "Senin - Sabtu (09.00 - 21.00 WIB)",
-    }),
-    defineField({
       name: "studioBase",
       title: "Studio Base / Location",
       type: "string",

@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 // Camera distance factor for cylindrical perspective - lower value produces stronger wide-angle / dramatic distortion
 const CAMERA = 1.35;
 
-function arc(bend: number) {
-  return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+function arc(bend: number, cameraFactor: number = CAMERA) {
+  return (cameraFactor - 1 + Math.cos(bend)) / (2 * cameraFactor * Math.sin(bend));
 }
 
 export type TiltedGridImage = {
@@ -58,17 +58,27 @@ export function TiltedGridHero({
   const isHoveredRef = React.useRef(false);
   isHoveredRef.current = isHovered;
 
-  // Responsive adjustments: On mobile screens, give tiles larger relative width and height so they aren't tiny
+  // Responsive adjustments:
+  // On mobile screens, scale tiles down slightly so multiple cards fit in view and the 3D cylindrical distortion is prominent
   const isMobile = size.width < 640;
   const isTablet = size.width < 1024;
-  const effectiveMaxWidth = isMobile ? 66 : isTablet ? 55 : 46;
-  const effectiveTileHeight = isMobile ? Math.max(tileHeight, 28) : tileHeight;
-  // Well-proportioned vertical placement across viewports
-  const effectiveAxis = isMobile ? 58 : isTablet ? 54 : axis;
+  const effectiveMaxWidth = isMobile ? 38 : isTablet ? 48 : 46;
+  const effectiveTileHeight = isMobile
+    ? Math.min(tileHeight, 18)
+    : isTablet
+    ? Math.min(tileHeight, 24)
+    : tileHeight;
+
+  // Well-proportioned vertical placement across viewports so cards never collide or overlap with header content
+  const effectiveAxis = isMobile ? 52 : isTablet ? 64 : axis;
+
+  // Perspective camera & cylinder curvature adjustments for pronounced 3D effect on mobile
+  const effectiveCurve = isMobile ? Math.max(curve, 52) : curve;
+  const cameraFactor = isMobile ? 1.2 : CAMERA;
 
   // Geometry calculations
-  const bend = (Math.min(75, Math.max(12, curve)) * Math.PI) / 180;
-  const radius = size.width * arc(bend);
+  const bend = (Math.min(75, Math.max(12, effectiveCurve)) * Math.PI) / 180;
+  const radius = size.width * arc(bend, cameraFactor);
   const tileH = Math.min(
     (effectiveTileHeight / 100) * size.height,
     ((effectiveMaxWidth / 100) * size.width) / aspectRatio
@@ -77,7 +87,7 @@ export function TiltedGridHero({
   const degPerRad = 180 / Math.PI;
   const unit = Math.max(4, degPerRad * (tileH / Math.max(radius, 1)));
   const pitch = Math.max(10, (aspectRatio + gap / 100) * unit);
-  const limit = Math.max(25, curve + (aspectRatio * unit) / 2);
+  const limit = Math.max(25, effectiveCurve + (aspectRatio * unit) / 2);
 
   // Ensure enough items to create a full continuous circle without empty gaps
   const displayItems = React.useMemo(() => {
@@ -192,7 +202,7 @@ export function TiltedGridHero({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          perspective: `${(radius * CAMERA).toFixed(1)}px`,
+          perspective: `${(radius * cameraFactor).toFixed(1)}px`,
           perspectiveOrigin: `50% ${effectiveAxis}%`,
           maskImage: mask,
           WebkitMaskImage: mask,
@@ -220,17 +230,16 @@ export function TiltedGridHero({
                 WebkitBackfaceVisibility: "hidden",
               }}
             >
-              <div className="group relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-white/10 dark:border-white/15 bg-card/90 transition-transform ">
+              <div className="group relative w-full h-full rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-white/10 dark:border-white/15 bg-card/90 transition-transform">
                 <img
                   src={img.src}
                   alt={img.alt || "Studio portfolio"}
                   draggable={false}
                   loading="eager"
-                  className="w-full h-full object-cover select-none pointer-events-none rounded-xl sm:rounded-2xl transition-transform "
+                  className="w-full h-full object-cover select-none pointer-events-none rounded-lg sm:rounded-xl md:rounded-2xl transition-transform"
                 />
                 {/* Subtle cinematic gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none rounded-xl sm:rounded-2xl" />
-
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none rounded-lg sm:rounded-xl md:rounded-2xl" />
               </div>
             </div>
           ))}

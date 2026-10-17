@@ -44,7 +44,7 @@ export function VideographyClient({ data }: VideographyClientProps) {
           return {
             id: item._key || String(index + 1),
             title: item.title || fallback?.title || `Video ${index + 1}`,
-            description: item.description || fallback?.description || "",
+            description: item.description || "",
             thumbnail: thumb,
             videoSrc: item.videoSrc || fallback?.videoSrc || "",
             category: item.category || fallback?.category || "Produksi",
@@ -62,7 +62,7 @@ export function VideographyClient({ data }: VideographyClientProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Group items by category (unique categories only, preserving discovery order)
+  // Group items by category and sort descending by video count (most videos first)
   const categoryGroups = React.useMemo(() => {
     const map = new Map<string, PlaylistItem[]>();
 
@@ -74,10 +74,12 @@ export function VideographyClient({ data }: VideographyClientProps) {
       map.get(cat)!.push(item);
     });
 
-    return Array.from(map.entries()).map(([category, items]) => ({
-      category,
-      items,
-    }));
+    return Array.from(map.entries())
+      .map(([category, items]) => ({
+        category,
+        items,
+      }))
+      .sort((a, b) => b.items.length - a.items.length);
   }, [allItems]);
 
   const title = "Videograph";

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, ExternalLink, BookOpen, Download } from "lucide-react";
+import { X, BookOpen, Download } from "lucide-react";
 import { DearFlipViewer } from "@/components/ui/dearflip-flipbook";
 import type { YearbookItem } from "@/components/blocks/yearbook-client";
 
@@ -40,7 +40,69 @@ export function YearbookPreviewModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-200">
-      <div className="relative w-full h-full max-w-7xl max-h-[96vh] rounded-3xl bg-neutral-950/95 border border-white/15 shadow-2xl flex flex-col overflow-hidden">
+      <div className="yearbook-modal-content relative w-full h-full max-w-7xl max-h-[96vh] rounded-3xl bg-neutral-950/95 border border-white/15 shadow-2xl flex flex-col overflow-hidden">
+        {/* Scoped styles to remove gray accent from chevron navigation buttons */}
+        <style>{`
+          .yearbook-modal-content .df-ui-prev,
+          .yearbook-modal-content .df-ui-next,
+          .yearbook-modal-content .df-ui-start,
+          .yearbook-modal-content .df-ui-end,
+          .yearbook-modal-content .df-ui-alt,
+          .yearbook-modal-content .ti-angle-left,
+          .yearbook-modal-content .ti-angle-right,
+          .yearbook-modal-content .ti-angle-double-left,
+          .yearbook-modal-content .ti-angle-double-right {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            border-right: none !important;
+            box-shadow: none !important;
+            color: #ffffff !important;
+            opacity: 0.8 !important;
+          }
+
+          .yearbook-modal-content .df-ui-prev:hover,
+          .yearbook-modal-content .df-ui-next:hover,
+          .yearbook-modal-content .df-ui-start:hover,
+          .yearbook-modal-content .df-ui-end:hover,
+          .yearbook-modal-content .df-ui-alt:hover,
+          .yearbook-modal-content .ti-angle-left:hover,
+          .yearbook-modal-content .ti-angle-right:hover,
+          .yearbook-modal-content .df-ui-prev.df-active,
+          .yearbook-modal-content .df-ui-next.df-active {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #ffffff !important;
+            opacity: 1 !important;
+          }
+
+          .yearbook-modal-content .df-container > .df-ui-prev,
+          .yearbook-modal-content .df-container > .df-ui-next,
+          .yearbook-modal-content .df-container.df-floating > .df-ui-prev,
+          .yearbook-modal-content .df-container.df-floating > .df-ui-next {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #ffffff !important;
+            opacity: 0.75 !important;
+          }
+
+          .yearbook-modal-content .df-container > .df-ui-prev:hover,
+          .yearbook-modal-content .df-container > .df-ui-next:hover,
+          .yearbook-modal-content .df-container.df-floating > .df-ui-prev:hover,
+          .yearbook-modal-content .df-container.df-floating > .df-ui-next:hover {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #ffffff !important;
+            opacity: 1 !important;
+          }
+        `}</style>
+
         {/* Top Header Bar */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-neutral-900/80 backdrop-blur-md">
           <div className="flex items-center gap-3 min-w-0">
@@ -69,19 +131,6 @@ export function YearbookPreviewModal({
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Unduh PDF</span>
-              </a>
-            )}
-
-            {yearbook.pdfUrl && (
-              <a
-                href={yearbook.pdfUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-medium text-neutral-200 border border-white/10 transition-colors"
-                title="Buka PDF di Tab Baru"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Tab Baru</span>
               </a>
             )}
 

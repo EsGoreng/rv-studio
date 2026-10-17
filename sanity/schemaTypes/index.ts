@@ -6,6 +6,7 @@ import { galleryType } from "./gallery";
 import { coverflowType } from "./coverflow";
 import { faqType } from "./faq";
 import { contactType } from "./contact";
+import { clientType } from "./client";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -16,5 +17,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     coverflowType,
     faqType,
     contactType,
+    clientType,
   ],
 };

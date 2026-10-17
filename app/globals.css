@@ -111,6 +111,67 @@ body {
     background-color: rgba(255, 255, 255, 0.15) !important;
   }
 
+  /* DearFlip Chevron Navigation Buttons - No gray accent */
+  .dearflip-wrapper .df-ui-prev,
+  .dearflip-wrapper .df-ui-next,
+  .dearflip-wrapper .df-ui-start,
+  .dearflip-wrapper .df-ui-end,
+  .dearflip-wrapper .df-ui-alt,
+  .dearflip-wrapper .ti-angle-left,
+  .dearflip-wrapper .ti-angle-right,
+  .dearflip-wrapper .ti-angle-double-left,
+  .dearflip-wrapper .ti-angle-double-right {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    opacity: 0.8 !important;
+  }
+
+  .dearflip-wrapper .df-ui-prev:hover,
+  .dearflip-wrapper .df-ui-next:hover,
+  .dearflip-wrapper .df-ui-start:hover,
+  .dearflip-wrapper .df-ui-end:hover,
+  .dearflip-wrapper .df-ui-alt:hover,
+  .dearflip-wrapper .ti-angle-left:hover,
+  .dearflip-wrapper .ti-angle-right:hover,
+  .dearflip-wrapper .df-ui-prev.df-active,
+  .dearflip-wrapper .df-ui-next.df-active {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  /* Floating side navigation chevron buttons */
+  .dearflip-wrapper .df-container > .df-ui-prev,
+  .dearflip-wrapper .df-container > .df-ui-next,
+  .dearflip-wrapper .df-container.df-floating > .df-ui-prev,
+  .dearflip-wrapper .df-container.df-floating > .df-ui-next {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    opacity: 0.7 !important;
+  }
+
+  .dearflip-wrapper .df-container > .df-ui-prev:hover,
+  .dearflip-wrapper .df-container > .df-ui-next:hover,
+  .dearflip-wrapper .df-container.df-floating > .df-ui-prev:hover,
+  .dearflip-wrapper .df-container.df-floating > .df-ui-next:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
   .dearflip-wrapper .df-ui-btn.disabled {
     opacity: 0.3 !important;
   }

@@ -63,6 +63,7 @@ export const HOME_PAGE_QUERY = `{
       },
       externalSrc,
       "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
+      password,
       alt,
       meta[]{
         _key,
@@ -85,8 +86,15 @@ export const HOME_PAGE_QUERY = `{
   },
   "contact": *[_type == "contact"][0]{
     phoneNumber,
-    responseHours,
     studioBase
+  },
+  "trustedBy": *[_type == "client"][0]{
+    items[]{
+      _key,
+      name,
+      logo,
+      externalLogoUrl
+    }
   }
 }`;
 
@@ -145,6 +153,7 @@ export interface HomePageSanityData {
       description?: string;
       color?: string;
       pdfUrl?: string;
+      password?: string;
       image?: any;
       externalSrc?: string;
       alt?: string;
@@ -172,8 +181,15 @@ export interface HomePageSanityData {
     title?: string;
     subtitle?: string;
     phoneNumber?: string;
-    responseHours?: string;
     studioBase?: string;
+  } | null;
+  trustedBy?: {
+    items?: Array<{
+      _key?: string;
+      name?: string;
+      logo?: any;
+      externalLogoUrl?: string;
+    }>;
   } | null;
 }
 
@@ -284,6 +300,7 @@ export const YEARBOOK_PAGE_QUERY = `{
       subtitle,
       description,
       "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
+      password,
       color,
       image {
         ...,
@@ -328,6 +345,40 @@ export async function getYearbookPageData(): Promise<YearbookPageSanityData | nu
   } catch (error) {
     console.warn(
       "Warning: Could not fetch yearbook page data from Sanity. Using fallback.",
+      error
+    );
+    return null;
+  }
+}
+
+export const CONTACT_QUERY = `*[_type == "contact"][0]{
+  title,
+  subtitle,
+  phoneNumber,
+  studioBase
+}`;
+
+export interface ContactSanityData {
+  title?: string;
+  subtitle?: string;
+  phoneNumber?: string;
+  studioBase?: string;
+}
+
+/**
+ * Fetches contact information (WhatsApp phone number, studio base) from Sanity.
+ */
+export async function getContactData(): Promise<ContactSanityData | null> {
+  try {
+    const data = await client.fetch<ContactSanityData>(
+      CONTACT_QUERY,
+      {},
+      { next: { revalidate: 30 } }
+    );
+    return data;
+  } catch (error) {
+    console.warn(
+      "Warning: Could not fetch contact data from Sanity. Using fallback.",
       error
     );
     return null;

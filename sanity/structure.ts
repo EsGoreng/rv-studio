@@ -48,6 +48,11 @@ export const structure: StructureResolver = (S) =>
         .id("contact")
         .child(S.document().schemaType("contact").documentId("contact")),
 
+      S.listItem()
+        .title("Client / Instansi")
+        .id("client")
+        .child(S.document().schemaType("client").documentId("client")),
+
       S.divider(),
       ...S.documentTypeListItems().filter(
         (listItem) =>
@@ -59,6 +64,7 @@ export const structure: StructureResolver = (S) =>
             "coverflow",
             "faq",
             "contact",
+            "client",
           ].includes(listItem.getId() || "")
       ),
     ]);

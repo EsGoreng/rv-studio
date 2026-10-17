@@ -1,119 +1,89 @@
 import type { FAQItemData } from "@/components/ui/faq-tabs";
 
 export const FAQ_CATEGORIES: Record<string, string> = {
-  "web-dev": "Web Development",
-  "mobile-dev": "Mobile Development",
-  "ui-ux": "UI/UX Design",
-  "copywriting": "Copywriting",
+  layanan: "Informasi Layanan",
+  pemesanan: "Pemesanan dan Harga",
+  produksi: "Proses Produksi",
+  hasil: "Hasil dan Dokumentasi",
 };
 
 export const FAQ_DATA: Record<string, FAQItemData[]> = {
-  "web-dev": [
+  layanan: [
     {
-      question: "What is web development?",
+      question: "Apa saja layanan yang tersedia di RV Project?",
       answer:
-        "Web development is the process of building and maintaining websites. It involves a combination of client-side and server-side programming, database management, and other web-related technologies.",
+        "RV Project menyediakan layanan fotografi, videografi, dokumentasi acara, dan pembuatan yearbook untuk sekolah maupun kebutuhan lainnya.",
     },
     {
-      question: "What programming languages are essential for web development?",
+      question: "Apakah RV Project melayani acara sekolah selain pembuatan yearbook?",
       answer:
-        "Essential languages for web development include HTML, CSS, and JavaScript for front-end development. For back-end development, popular languages include Python, Ruby, PHP, Java, and Node.js.",
+        "Ya, kami melayani dokumentasi berbagai acara sekolah, seperti wisuda, perpisahan, pentas seni, acara kelulusan, dan kegiatan lainnya.",
     },
     {
-      question: "What's the difference between front-end and back-end development?",
+      question: "Apakah bisa memesan jasa fotografi atau videografi saja?",
       answer:
-        "Front-end development focuses on the user interface and user experience of a website, while back-end development deals with server-side logic, databases, and application integration.",
-    },
-    {
-      question: "How long does it typically take to develop a website?",
-      answer:
-        "The time to develop a website can vary greatly depending on its complexity. A simple static website might take a few days, while a complex web application could take several months or even years.",
-    },
-    {
-      question: "What is responsive web design?",
-      answer:
-        "Responsive web design is an approach to web design that makes web pages render well on a variety of devices and window or screen sizes. It ensures that websites are accessible and visually appealing across different platforms.",
+        "Bisa. Anda dapat memesan layanan fotografi, videografi, atau keduanya sesuai kebutuhan acara.",
     },
   ],
-  "mobile-dev": [
+  pemesanan: [
     {
-      question: "What is mobile development?",
+      question: "Bagaimana cara memesan layanan RV Project?",
       answer:
-        "Mobile development is the process of creating software applications that run on mobile devices such as smartphones and tablets. It involves designing, coding, and testing applications for mobile operating systems like iOS and Android.",
+        "Anda dapat menghubungi tim RV Project melalui kontak yang tersedia di website atau media sosial kami untuk mendiskusikan kebutuhan dan jadwal pemesanan.",
     },
     {
-      question: "What's the difference between native and cross-platform mobile development?",
+      question: "Berapa harga jasa RV Project?",
       answer:
-        "Native development involves building separate apps for each platform using platform-specific languages (Swift for iOS, Java/Kotlin for Android). Cross-platform development uses frameworks like React Native or Flutter to build a single codebase that works on multiple platforms.",
+        "Harga menyesuaikan jenis layanan, jumlah peserta, durasi acara, dan kebutuhan produksi. Hubungi tim kami untuk mendapatkan penawaran harga.",
     },
     {
-      question: "What are some popular mobile app development frameworks?",
+      question: "Apakah RV Project melayani pemesanan yearbook untuk satu angkatan?",
       answer:
-        "Popular mobile app development frameworks include React Native, Flutter, Xamarin, Ionic, and NativeScript. Each has its own strengths and is suited for different types of projects.",
+        "Ya, kami melayani pembuatan yearbook untuk satu angkatan maupun kelompok kelas dengan konsep yang disesuaikan dengan kebutuhan sekolah.",
     },
     {
-      question: "How do you ensure mobile app security?",
+      question: "Kapan sebaiknya melakukan pemesanan?",
       answer:
-        "Mobile app security involves practices such as secure coding, data encryption, secure authentication methods, regular security audits, and staying up-to-date with the latest security patches and best practices.",
-    },
-    {
-      question: "What is the typical mobile app development lifecycle?",
-      answer:
-        "The typical mobile app development lifecycle includes stages such as planning, design, development, testing, deployment, and maintenance. It often follows an iterative process with continuous updates and improvements.",
+        "Sebaiknya lakukan pemesanan lebih awal agar proses perencanaan, penjadwalan, pemotretan, dan produksi dapat berjalan dengan baik.",
     },
   ],
-  "ui-ux": [
+  produksi: [
     {
-      question: "What is UI/UX design?",
+      question: "Apakah konsep yearbook bisa disesuaikan dengan keinginan sekolah?",
       answer:
-        "UI (User Interface) design focuses on the visual elements of a digital product, while UX (User Experience) design deals with the overall feel and functionality of the product. Together, they aim to create products that are both visually appealing and easy to use.",
+        "Ya, konsep desain, tema, gaya fotografi, dan isi yearbook dapat didiskusikan bersama tim kami sebelum proses produksi dimulai.",
     },
     {
-      question: "What's the difference between UI and UX design?",
+      question: "Berapa lama proses pembuatan yearbook?",
       answer:
-        "UI design focuses on the look and layout of a product's interface, including colors, typography, and visual elements. UX design is broader, encompassing the entire user journey and how users interact with the product.",
+        "Durasi produksi bergantung pada jumlah siswa, kompleksitas desain, jumlah halaman, dan proses revisi. Estimasi waktu akan disampaikan setelah kebutuhan proyek disepakati.",
     },
     {
-      question: "What tools do UI/UX designers commonly use?",
+      question: "Apakah pelanggan bisa meminta revisi desain atau video?",
       answer:
-        "Common tools for UI/UX design include Sketch, Figma, Adobe XD, InVision, and Protopie for design and prototyping. Research and testing tools might include UserTesting, Hotjar, and Optimal Workshop.",
+        "Ya, revisi dapat dilakukan sesuai ketentuan dan kesepakatan layanan pada awal pemesanan.",
     },
     {
-      question: "What is a user persona?",
+      question: "Apakah hasil foto dan video diberikan dalam format digital?",
       answer:
-        "A user persona is a fictional representation of your ideal user or customer. It's based on user research and includes details about the persona's background, goals, challenges, and behaviors. Personas help guide design decisions by keeping the focus on the end-user.",
-    },
-    {
-      question: "What is the importance of user testing in UI/UX design?",
-      answer:
-        "User testing is crucial in UI/UX design as it provides direct feedback from actual users. It helps identify usability issues, validate design decisions, and ensure that the product meets user needs and expectations.",
+        "Format hasil akhir menyesuaikan paket layanan yang dipilih. Detail mengenai file digital, video, cetakan foto, atau yearbook fisik dapat dikonfirmasi saat konsultasi.",
     },
   ],
-  "copywriting": [
+  hasil: [
     {
-      question: "What is copywriting?",
+      question: "Apakah RV Project menyediakan yearbook dalam bentuk cetak?",
       answer:
-        "Copywriting is the act of writing text for the purpose of advertising or other forms of marketing. The product, called copy, is written content that aims to increase brand awareness and ultimately persuade a person or group to take a particular action.",
+        "Kami dapat mendiskusikan kebutuhan yearbook cetak maupun format digital sesuai layanan dan paket yang tersedia.",
     },
     {
-      question: "What's the difference between copywriting and content writing?",
+      question: "Apakah pelanggan bisa melihat portofolio hasil pekerjaan sebelumnya?",
       answer:
-        "While both involve writing, copywriting is specifically aimed at persuasion and driving action (like making a purchase), while content writing is more focused on informing, educating, or entertaining the reader.",
+        "Ya, Anda dapat melihat pilihan hasil fotografi, videografi, dan yearbook kami melalui halaman galeri atau portofolio RV Project.",
     },
     {
-      question: "What are some key elements of effective copywriting?",
+      question: "Bagaimana jika ingin mendiskusikan konsep khusus untuk sekolah?",
       answer:
-        "Key elements of effective copywriting include understanding the target audience, crafting compelling headlines, focusing on benefits rather than features, using persuasive language, and including a clear call-to-action.",
-    },
-    {
-      question: "How important is SEO in copywriting?",
-      answer:
-        "SEO (Search Engine Optimization) is very important in copywriting, especially for digital content. It helps ensure that your copy reaches your target audience by making it more visible in search engine results. This involves using relevant keywords, creating quality content, and following SEO best practices.",
-    },
-    {
-      question: "What is a call-to-action (CTA) in copywriting?",
-      answer:
-        "A call-to-action (CTA) is a prompt in your copy that tells the reader what to do next. It's usually a command verb like 'Buy Now,' 'Sign Up,' or 'Learn More.' An effective CTA is clear, compelling, and creates a sense of urgency.",
+        "Anda dapat menghubungi tim kami dan menyampaikan referensi, tema, serta kebutuhan sekolah. Tim kami akan membantu mendiskusikan konsep yang sesuai.",
     },
   ],
 };

@@ -141,7 +141,7 @@ export function CoverflowSection({
   const description =
     data?.description ??
     propDescription ??
-    "Yearbook yang dirancang untuk mengabadikan cerita dan perjalananmu.";
+    "Desain dan produksi yearbook sesuai kebutuhan.";
 
   const slides: CoverflowSlide[] = React.useMemo(() => {
     if (propSlides && propSlides.length > 0) return propSlides;

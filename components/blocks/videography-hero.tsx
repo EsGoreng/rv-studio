@@ -72,7 +72,7 @@ export function VideographyHero({
           return {
             id: item._key || String(index + 1),
             title: item.title || fallback?.title || `Video ${index + 1}`,
-            description: item.description || fallback?.description || "",
+            description: item.description || "",
             thumbnail: thumb,
             videoSrc: item.videoSrc || fallback?.videoSrc || "",
             category: item.category || fallback?.category,
@@ -412,9 +412,11 @@ export function VideographyHero({
             {featured.title}
           </h1>
 
-          <p className="text-[10px] xs:text-xs sm:text-sm md:text-base text-neutral-300 leading-snug sm:leading-relaxed max-w-lg line-clamp-1 xs:line-clamp-2 sm:line-clamp-3 drop-shadow">
-            {featured.description || "Tonton karya produksi visual terbaik dari RV Studio dengan standar sinematik berkualitas tinggi."}
-          </p>
+          {featured.description?.trim() ? (
+            <p className="text-[10px] xs:text-xs sm:text-sm md:text-base text-neutral-300 leading-snug sm:leading-relaxed max-w-lg line-clamp-1 xs:line-clamp-2 sm:line-clamp-3 drop-shadow">
+              {featured.description}
+            </p>
+          ) : null}
         </div>
 
         {/* Video Player Controls Bar (Scrub Bar + Buttons) */}

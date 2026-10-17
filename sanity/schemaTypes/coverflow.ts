@@ -64,6 +64,12 @@ export const coverflowType = defineType({
               description: "URL alternatif berkas PDF jika disimpan di server eksternal",
             }),
             defineField({
+              name: "password",
+              title: "Access Password",
+              type: "string",
+              description: "Password untuk membuka preview PDF buku kenangan (kosongkan jika tanpa password / publik)",
+            }),
+            defineField({
               name: "alt",
               title: "Alt Text",
               type: "string",

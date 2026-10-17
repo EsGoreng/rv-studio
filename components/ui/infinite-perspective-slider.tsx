@@ -317,6 +317,10 @@ interface SliderConfig {
   textEnterDuration: number;
   textLeaveDuration: number;
   textStagger: number;
+  autoScroll: boolean;
+  autoScrollSpeed: number;
+  autoScrollMobileOnly: boolean;
+  pauseOnHover: boolean;
 }
 
 export interface InfinitePerspectiveSliderCompProps {
@@ -336,6 +340,10 @@ export interface InfinitePerspectiveSliderCompProps {
   textEnterDuration?: number;
   textLeaveDuration?: number;
   textStagger?: number;
+  autoScroll?: boolean;
+  autoScrollSpeed?: number;
+  autoScrollMobileOnly?: boolean;
+  pauseOnHover?: boolean;
   className?: string;
 }
 
@@ -356,8 +364,13 @@ function InfinitePerspectiveSliderComp({
   textEnterDuration = 0.35,
   textLeaveDuration = 0.35,
   textStagger = 0.06,
+  autoScroll = true,
+  autoScrollSpeed = 1.0,
+  autoScrollMobileOnly = true,
+  pauseOnHover = true,
   className,
 }: InfinitePerspectiveSliderCompProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
   const settersRef = useRef<CardSetter[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -370,15 +383,18 @@ function InfinitePerspectiveSliderComp({
   const hoveredIndexRef = useRef<number | null>(null);
   const isScrollingRef = useRef(false);
   const scrollStopTimerRef = useRef<number | null>(null);
+  const isPausedRef = useRef(false);
+  const isInteractingWithSliderRef = useRef(false);
+  const resumeTimerRef = useRef<number | null>(null);
 
   const leaveHandlersRef = useRef<Record<number, () => void>>({});
   const enterHandlersRef = useRef<Record<number, () => void>>({});
 
   const [viewportWidth, setViewportWidth] = useState(DEFAULT_CARD_WIDTH * 4);
 
-  const isMobileViewport = viewportWidth < MOBILE_BREAKPOINT;
+  const isMobileViewport = viewportWidth < MOBILE_BREAKPOINT || viewportWidth < 768;
   const isTabletViewport =
-    viewportWidth >= MOBILE_BREAKPOINT && viewportWidth < TABLET_BREAKPOINT;
+    !isMobileViewport && viewportWidth < TABLET_BREAKPOINT;
 
   const resolvedCardWidth = isMobileViewport
     ? MOBILE_CARD_WIDTH
@@ -424,6 +440,10 @@ function InfinitePerspectiveSliderComp({
     textEnterDuration,
     textLeaveDuration,
     textStagger,
+    autoScroll,
+    autoScrollSpeed,
+    autoScrollMobileOnly,
+    pauseOnHover,
   });
 
   configRef.current = {
@@ -439,6 +459,10 @@ function InfinitePerspectiveSliderComp({
     textEnterDuration,
     textLeaveDuration,
     textStagger,
+    autoScroll,
+    autoScrollSpeed,
+    autoScrollMobileOnly,
+    pauseOnHover,
   };
 
   const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
@@ -550,7 +574,23 @@ function InfinitePerspectiveSliderComp({
 
     initSetters();
 
-    const tick = () => {
+    let lastTime = 0;
+    const tick = (time: number) => {
+      const config = configRef.current;
+      const isMobile = viewportWidth < MOBILE_BREAKPOINT || viewportWidth < 768;
+      const shouldAutoScroll =
+        config.autoScroll &&
+        (!config.autoScrollMobileOnly || isMobile) &&
+        !state.isDragging &&
+        !isPausedRef.current;
+
+      const dt = lastTime ? Math.min((time - lastTime) / (1000 / 60), 2.5) : 1;
+      lastTime = time;
+
+      if (shouldAutoScroll) {
+        state.target += config.autoScrollSpeed * dt;
+      }
+
       if (reducedMotion) {
         state.current = state.target;
         state.velocity = 0;
@@ -558,7 +598,6 @@ function InfinitePerspectiveSliderComp({
         state.rotationVelocity = 0;
         state.currentRotation = 0;
       } else {
-        const config = configRef.current;
         state.current = lerp(state.current, state.target, config.scrollLerp);
         state.velocity = state.target - state.current;
 
@@ -585,13 +624,25 @@ function InfinitePerspectiveSliderComp({
         );
       }
 
-      const finalRotation = clamp(state.currentRotation, -configRef.current.maxRotation, configRef.current.maxRotation);
+      const finalRotation = clamp(
+        state.currentRotation,
+        -config.maxRotation,
+        config.maxRotation
+      );
 
-      if (Math.abs(state.current - state.target) < 0.05) {
+      // Seamless wrapping loop for infinite scroll
+      if (Math.abs(state.current) >= loopWidth) {
+        const shift = Math.floor(state.current / loopWidth) * loopWidth;
+        if (shift !== 0) {
+          state.current -= shift;
+          state.target -= shift;
+        }
+      } else if (Math.abs(state.current - state.target) < 0.05) {
         const shift = Math.round(state.current / loopWidth) * loopWidth;
-
-        state.current -= shift;
-        state.target -= shift;
+        if (shift !== 0) {
+          state.current -= shift;
+          state.target -= shift;
+        }
       }
 
       positionCards(state.current, finalRotation);
@@ -631,15 +682,77 @@ function InfinitePerspectiveSliderComp({
       state.isDragging = false;
     };
 
-    const handleMouseDown = (event: MouseEvent) => onDown(event.clientX);
-    const handleMouseMove = (event: MouseEvent) => onMove(event.clientX);
-    const handleMouseUp = () => onUp();
+    const handleMouseDown = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        return;
+      }
+      isInteractingWithSliderRef.current = true;
+      isPausedRef.current = true;
+      if (resumeTimerRef.current) {
+        window.clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+      onDown(event.clientX);
+    };
 
-    const handleTouchStart = (event: TouchEvent) =>
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!isInteractingWithSliderRef.current) return;
+      onMove(event.clientX);
+    };
+
+    const handleMouseUp = () => {
+      if (!isInteractingWithSliderRef.current) return;
+      isInteractingWithSliderRef.current = false;
+      onUp();
+      if (resumeTimerRef.current) {
+        window.clearTimeout(resumeTimerRef.current);
+      }
+      resumeTimerRef.current = window.setTimeout(() => {
+        isPausedRef.current = false;
+      }, 800);
+    };
+
+    const handleTouchStart = (event: TouchEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        return;
+      }
+      isInteractingWithSliderRef.current = true;
+      isPausedRef.current = true;
+      if (resumeTimerRef.current) {
+        window.clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
       onDown(event.touches[0].clientX);
-    const handleTouchMove = (event: TouchEvent) =>
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (!isInteractingWithSliderRef.current) return;
       onMove(event.touches[0].clientX);
-    const handleTouchEnd = () => onUp();
+    };
+
+    const handleTouchEnd = () => {
+      if (!isInteractingWithSliderRef.current) return;
+      isInteractingWithSliderRef.current = false;
+      onUp();
+      if (resumeTimerRef.current) {
+        window.clearTimeout(resumeTimerRef.current);
+      }
+      resumeTimerRef.current = window.setTimeout(() => {
+        isPausedRef.current = false;
+      }, 800);
+    };
+
+    const handleContainerMouseEnter = () => {
+      if (configRef.current.pauseOnHover && !isMobileViewport) {
+        isPausedRef.current = true;
+      }
+    };
+
+    const handleContainerMouseLeave = () => {
+      if (!isInteractingWithSliderRef.current) {
+        isPausedRef.current = false;
+      }
+    };
 
     const onResize = () => {
       markScrolling();
@@ -668,6 +781,12 @@ function InfinitePerspectiveSliderComp({
     });
     loop.start();
 
+    const containerEl = containerRef.current;
+    if (containerEl) {
+      containerEl.addEventListener("mouseenter", handleContainerMouseEnter);
+      containerEl.addEventListener("mouseleave", handleContainerMouseLeave);
+    }
+
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("resize", onResize);
 
@@ -685,6 +804,14 @@ function InfinitePerspectiveSliderComp({
       if (scrollStopTimerRef.current) {
         window.clearTimeout(scrollStopTimerRef.current);
       }
+      if (resumeTimerRef.current) {
+        window.clearTimeout(resumeTimerRef.current);
+      }
+
+      if (containerEl) {
+        containerEl.removeEventListener("mouseenter", handleContainerMouseEnter);
+        containerEl.removeEventListener("mouseleave", handleContainerMouseLeave);
+      }
 
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", onResize);
@@ -697,7 +824,7 @@ function InfinitePerspectiveSliderComp({
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [cardStep, images, positionCards, markScrolling]);
+  }, [cardStep, images, positionCards, markScrolling, isMobileViewport, viewportWidth]);
 
   useEffect(() => {
     if (!images.length) return;
@@ -747,13 +874,21 @@ function InfinitePerspectiveSliderComp({
 
       const allLines = [...numberLines, ...titleLines, ...descriptionLines];
 
-      gsap.set([number, title, description], {
-        autoAlpha: 0,
-      });
-
-      gsap.set(allLines, {
-        yPercent: 100,
-      });
+      if (isMobileViewport) {
+        gsap.set([number, title, description], {
+          autoAlpha: 1,
+        });
+        gsap.set(allLines, {
+          yPercent: 0,
+        });
+      } else {
+        gsap.set([number, title, description], {
+          autoAlpha: 0,
+        });
+        gsap.set(allLines, {
+          yPercent: 100,
+        });
+      }
 
       const enter = () => {
         if (isScrollingRef.current) return;
@@ -895,10 +1030,13 @@ function InfinitePerspectiveSliderComp({
       activeHoverIndexRef.current = null;
       hoveredIndexRef.current = null;
     };
-  }, [images]);
+  }, [images, isMobileViewport]);
 
   return (
-    <div className={cn("relative w-full overflow-hidden py-1 sm:py-2", className)}>
+    <div
+      ref={containerRef}
+      className={cn("relative w-full overflow-hidden py-1 sm:py-2 select-none", className)}
+    >
       {sideFade && (
         <>
           <div
@@ -1003,6 +1141,10 @@ export interface InfinitePerspectiveSliderProps {
   textEnterDuration?: number;
   textLeaveDuration?: number;
   textStagger?: number;
+  autoScroll?: boolean;
+  autoScrollSpeed?: number;
+  autoScrollMobileOnly?: boolean;
+  pauseOnHover?: boolean;
   className?: string;
 }
 
