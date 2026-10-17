@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { siteConfig } from "@/lib/site";
+import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
 const netflixSans = localFont({
@@ -29,16 +32,77 @@ const netflixSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "RV Studio",
-  description: "RV Studio Portfolio and Showcase",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: "RV Studio — Creative Visual Production & Yearbook House",
+    template: "%s | RV Studio",
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: "RV Studio — Creative Visual Production & Yearbook House",
+    description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "RV Studio — Visual Production & Creative Yearbook",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RV Studio — Creative Visual Production & Yearbook House",
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const rootSchema = {
+    "@context": "https://schema.org",
+    "@graph": [getOrganizationSchema(), getWebSiteSchema()],
+  };
+
   return (
     <html
-      lang="en"
+      lang="id"
       className={`${netflixSans.variable} font-sans h-full antialiased`}
     >
+      <head>
+        <JsonLd data={rootSchema} id="root-structured-data" />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -2,6 +2,7 @@ import * as React from "react";
 import { FAQ, type FAQItemData } from "@/components/ui/faq-tabs";
 import { FAQ_CATEGORIES, FAQ_DATA } from "@/constants/faq";
 import { cn } from "@/lib/utils";
+import { JsonLd } from "@/components/seo/json-ld";
 
 export interface FAQBlockProps {
   title?: string;
@@ -64,6 +65,39 @@ export function FAQBlock({
     };
   }, [data?.categories, propCategories, propFaqData]);
 
+  // Construct FAQPage JSON-LD schema for AEO & Google Rich Results
+  const faqSchema = React.useMemo(() => {
+    const questions: Array<{
+      "@type": string;
+      name: string;
+      acceptedAnswer: {
+        "@type": string;
+        text: string;
+      };
+    }> = [];
+
+    Object.values(faqData).forEach((items) => {
+      items.forEach((item) => {
+        if (item.question?.trim() && item.answer?.trim()) {
+          questions.push({
+            "@type": "Question",
+            name: item.question.trim(),
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer.trim(),
+            },
+          });
+        }
+      });
+    });
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: questions,
+    };
+  }, [faqData]);
+
   return (
     <div
       id="faq"
@@ -72,6 +106,7 @@ export function FAQBlock({
         className
       )}
     >
+      <JsonLd data={faqSchema} id="faq-structured-data" />
       <FAQ
         title={title}
         categories={categories}

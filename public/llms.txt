@@ -1,0 +1,25 @@
+# RV Studio
+
+> Creative visual production house spesialis pembuatan Buku Tahunan Sekolah (Yearbook), Fotografi Kreatif & Wisuda, serta Produksi Videografi Sinematik yang berbasis di Kuningan, Jawa Barat, Indonesia.
+
+RV Studio melayani sekolah, universitas, instansi, dan perorangan di wilayah Ciayumajakuning (Cirebon, Indramayu, Majalengka, Kuningan), Jawa Barat, dan seluruh Indonesia.
+
+## Layanan Utama
+
+- [Buku Tahunan Sekolah / Yearbook](https://rvproject.id/yearbook): Layanan end-to-end produksi buku kenangan dari konsep tema, sesi photoshoot, layout design, cetak premium hard cover, hingga digital 3D interactive flipbook berpassword.
+- [Videography Sinematik](https://rvproject.id/videography): Produksi video profil sekolah/instansi, cinematic aftermovie event, short film, teaser promosi, dan commercial video berkualitas 4K.
+- [Photography & Curated Shoots](https://rvproject.id/photography): Sesi foto studio/outdoor, potret wisuda personal & grup, fashion editorial, dan katalog produk.
+- [About RV Studio](https://rvproject.id/about): Cerita brand, visi artistik, studio base, dan filosofi visual production.
+
+## Informasi & Akses Mesin
+
+- [Struktur Harga & Paket](/pricing.md): Format markdown transparan untuk agen AI dan klien mengenai paket yearbook, foto wisuda, dan videografi.
+- [Dokumentasi Lengkap LLM](/llms-full.txt): Pengetahuan menyeluruh mengenai alur kerja, spesifikasi teknis cetak, dan FAQ lengkap.
+- [Instagram Resmi](https://www.instagram.com/rvproject.77): Portofolio visual dan pembaruan kegiatan harian.
+- WhatsApp Konsultasi: +62 822-1689-2403
+
+## Ringkasan Spesifikasi Teknis
+
+- **Format Buku Tahunan:** Hardcover jahit benang & lem panas, kertas Art Carton / Matte Paper 150-260 gsm, laminasi Doff/Glossy/Spot UV, bonus Digital 3D Flipbook Viewer.
+- **Produksi Video:** Standar kamera Sony Cinema Line / mirrorless 4K, color grading profesional, audio mastering, drone aerial documentation.
+- **Lokasi Basis:** Kuningan, Jawa Barat, Indonesia (tersedia layanan luar kota/on-site visit).

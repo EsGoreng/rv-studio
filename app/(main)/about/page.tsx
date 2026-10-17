@@ -10,10 +10,31 @@ import {
 } from "lucide-react";
 import { DitheredHeader } from "@/components/ui/dithered-grid";
 
+import { siteConfig } from "@/lib/site";
+import { getBreadcrumbSchema } from "@/lib/schema";
+import { JsonLd } from "@/components/seo/json-ld";
+
 export const metadata: Metadata = {
-  title: "About Us | RV Studio",
+  title: "About Us | Profil RV Studio & Rekam Jejak Visual",
   description:
-    "Kenali RV Studio lebih dekat — Creative visual production house yang berfokus pada fotografi, videografi sinematik, dan produksi buku tahunan kreatif.",
+    "Kenali RV Studio (RV Project) lebih dekat — Creative visual production house spesialis pembuatan buku tahunan sekolah, fotografi wisuda & personal, serta videografi sinematik berbasis di Kuningan, Jawa Barat.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Us | Profil & Layanan Kreatif RV Studio",
+    description:
+      "Creative visual production house spesialis pembuatan buku tahunan sekolah, fotografi, dan videografi sinematik berkualitas tinggi.",
+    url: `${siteConfig.url}/about`,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "About RV Studio",
+      },
+    ],
+  },
 };
 
 // Core services data
@@ -45,8 +66,25 @@ const SERVICES = [
 ];
 
 export default function AboutPage() {
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Beranda", path: "/" },
+    { name: "About Us", path: "/about" },
+  ]);
+
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About RV Studio",
+    description: siteConfig.description,
+    url: `${siteConfig.url}/about`,
+    mainEntity: {
+      "@id": `${siteConfig.url}/#organization`,
+    },
+  };
+
   return (
     <div className="relative min-h-screen bg-background text-foreground pt-6 sm:pt-10 pb-28 sm:pb-36 selection:bg-neutral-800 selection:text-white">
+      <JsonLd data={{ "@context": "https://schema.org", "@graph": [breadcrumbSchema, aboutSchema] }} id="about-schema" />
       {/* Background Subtle Gradient Glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-primary/5 via-transparent to-transparent -z-10" />
 
@@ -62,19 +100,26 @@ export default function AboutPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
               About RV Project
             </h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
+              Rumah produksi visual kreatif berbasis di Kuningan, Jawa Barat yang menggabungkan estetika modern dan narasi visual autentik.
+            </p>
           </div>
         </DitheredHeader>
 
         {/* ─── 2. Story & Services Section ──────────────────────────────────── */}
         <section className="rounded-3xl border border-border/40 bg-card/20 p-6 sm:p-10 backdrop-blur-sm space-y-8 sm:space-y-10">
-          {/* Narrative Content */}
+          {/* Narrative Content with Direct AEO Answer Block */}
           <div className="space-y-4 max-w-3xl">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
-              Mengabadikan Momen Lewat Foto dan Video
+              Mengabadikan Momen Lewat Foto dan Video Sinematik
             </h2>
-            <div className="space-y-3 text-muted-foreground leading-relaxed text-sm sm:text-base">
+            <div className="space-y-4 text-muted-foreground leading-relaxed text-sm sm:text-base">
+              {/* 40-60 word extractable passage for AI engines */}
+              <p className="text-foreground/90 font-medium">
+                RV Studio (RV Project) adalah creative visual production house spesialis pembuatan buku tahunan sekolah (yearbook organizer), fotografi wisuda & personal, serta produksi video sinematik komersial. Berbasis di Kuningan, Jawa Barat, kami melayani institusi pendidikan dan klien di wilayah Ciayumajakuning maupun seluruh Indonesia.
+              </p>
               <p>
-                RV Studio berawal dari minat kami terhadap fotografi, videografi, dan desain visual. Kami menyediakan layanan dokumentasi wisuda, kegiatan sekolah, hingga berbagai acara personal dengan hasil yang profesional, menarik, dan sesuai kebutuhan klien.
+                Berawal dari dedikasi mendalam pada seni visual, kami mendampingi setiap langkah produksi mulai dari perancangan konsep tema, penyusunan moodboard, pengarahan gaya (art direction), hingga proses cetak fisik premium dan penerbitan digital 3D interactive flipbook.
               </p>
             </div>
           </div>
