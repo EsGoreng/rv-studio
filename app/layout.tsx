@@ -50,6 +50,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      { url: "/logo-rv.png" },
+      { url: "/logo-rv.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo-rv.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/logo-rv.png",
+    apple: [
+      { url: "/logo-rv.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
@@ -100,10 +111,10 @@ export default function RootLayout({
       lang="id"
       className={`${netflixSans.variable} font-sans h-full antialiased`}
     >
-      <head>
+      <body className="min-h-full flex flex-col">
         <JsonLd data={rootSchema} id="root-structured-data" />
-      </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+        {children}
+      </body>
     </html>
   );
 }
