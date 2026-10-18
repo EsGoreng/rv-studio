@@ -11,7 +11,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "RV Project",
   description:
-    "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
+    "Layanan Jasa Videografi, Fotografi, dan Buku Tahunan Sekolah.",
   alternates: {
     canonical: "/",
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: "RV Project",
     description:
-      "Layanan untuk pembuatan buku tahunan sekolah, foto wisuda, dan lainnya di Jawa Barat.",
+      "Layanan Jasa Videografi, Fotografi, dan Buku Tahunan Sekolah.",
     url: siteConfig.url,
     images: [
       {
