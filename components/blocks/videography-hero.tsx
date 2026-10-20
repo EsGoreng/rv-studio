@@ -67,7 +67,8 @@ export function VideographyHero({
           const fallback = SAMPLE_PLAYLIST[index % SAMPLE_PLAYLIST.length];
           const thumb = resolveImageUrl(
             item.thumbnail,
-            item.externalThumbnail || fallback?.thumbnail
+            item.externalThumbnail || fallback?.thumbnail,
+            { width: 1280, height: 720, quality: 80 }
           );
           return {
             id: item._key || String(index + 1),

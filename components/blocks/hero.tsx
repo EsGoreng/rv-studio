@@ -44,7 +44,8 @@ export function Hero({
       return data.images.map((item, index) => ({
         src: resolveImageUrl(
           item.image,
-          item.externalSrc || item.src || HERO_IMAGES[index % HERO_IMAGES.length]?.src
+          item.externalSrc || item.src || HERO_IMAGES[index % HERO_IMAGES.length]?.src,
+          { width: 640, height: 400, quality: 75 }
         ),
         alt: item.alt || `Hero image ${index + 1}`,
       }));
@@ -83,7 +84,6 @@ export function Hero({
               />
               <Image
                 src="/logo-rv.png"
-                unoptimized
                 alt={title}
                 width={240}
                 height={240}

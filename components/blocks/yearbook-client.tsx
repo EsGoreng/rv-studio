@@ -34,7 +34,8 @@ export function YearbookClient({ data }: YearbookClientProps) {
       return rawSlides.map((slide, index) => {
         const src = resolveImageUrl(
           slide.image,
-          slide.externalSrc || ""
+          slide.externalSrc || "",
+          { width: 640, quality: 80 }
         );
         const dimensions = slide.image?.asset?.metadata?.dimensions;
         const yearMeta = slide.meta?.find(

@@ -42,7 +42,8 @@ export function ShowcaseGallerySection({
         const fallback = GALLERY_ITEMS[index % GALLERY_ITEMS.length];
         const src = resolveImageUrl(
           item.image,
-          item.externalSrc || fallback?.src
+          item.externalSrc || fallback?.src,
+          { width: 720, quality: 75 }
         );
 
         const title = item.title || fallback?.title || `Showcase ${index + 1}`;

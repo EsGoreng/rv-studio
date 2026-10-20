@@ -772,6 +772,8 @@ export function VideoPlaylist({
                             <img
                               src={item.thumbnail}
                               alt={item.title}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                             {isActive && (

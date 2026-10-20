@@ -151,7 +151,8 @@ export function CoverflowSection({
         const fallback = COVERFLOW_SLIDES[index % COVERFLOW_SLIDES.length];
         const src = resolveImageUrl(
           slide.image,
-          slide.externalSrc || fallback?.src
+          slide.externalSrc || fallback?.src,
+          { width: 640, quality: 80 }
         );
 
         const dimensions = slide.image?.asset?.metadata?.dimensions;

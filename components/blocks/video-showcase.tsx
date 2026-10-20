@@ -51,7 +51,8 @@ export function VideoShowcaseSection({
           const fallback = SAMPLE_PLAYLIST[index % SAMPLE_PLAYLIST.length];
           const thumb = resolveImageUrl(
             item.thumbnail,
-            item.externalThumbnail || fallback?.thumbnail
+            item.externalThumbnail || fallback?.thumbnail,
+            { width: 480, height: 270, quality: 75 }
           );
 
           return {

@@ -117,10 +117,10 @@ export function TiltedGridHero({
     return () => ro.disconnect();
   }, []);
 
-  // Preload images
+  // Preload visible initial images
   React.useEffect(() => {
     if (typeof window === "undefined") return;
-    displayItems.slice(0, 12).forEach(({ src }) => {
+    displayItems.slice(0, 6).forEach(({ src }) => {
       const img = new window.Image();
       img.src = src;
     });
@@ -236,6 +236,7 @@ export function TiltedGridHero({
                   alt={img.alt || "Studio portfolio"}
                   draggable={false}
                   loading="eager"
+                  decoding="async"
                   className="w-full h-full object-cover select-none pointer-events-none rounded-lg sm:rounded-xl md:rounded-2xl transition-transform"
                 />
                 {/* Subtle cinematic gradient overlay */}

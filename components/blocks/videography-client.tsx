@@ -39,7 +39,8 @@ export function VideographyClient({ data }: VideographyClientProps) {
           const fallback = SAMPLE_PLAYLIST[index % SAMPLE_PLAYLIST.length];
           const thumb = resolveImageUrl(
             item.thumbnail,
-            item.externalThumbnail || fallback?.thumbnail
+            item.externalThumbnail || fallback?.thumbnail,
+            { width: 640, height: 360, quality: 75 }
           );
           return {
             id: item._key || String(index + 1),

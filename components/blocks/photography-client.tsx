@@ -31,7 +31,8 @@ export function PhotographyClient({ data }: PhotographyClientProps) {
         const fallback = PHOTOGRAPHY_ITEMS[index % PHOTOGRAPHY_ITEMS.length];
         const src = resolveImageUrl(
           item.image,
-          item.externalSrc || fallback?.src
+          item.externalSrc || fallback?.src,
+          { width: 800, quality: 75 }
         );
 
         const title = item.title || fallback?.title || `Photo ${index + 1}`;

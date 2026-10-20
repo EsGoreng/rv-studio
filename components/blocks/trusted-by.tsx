@@ -55,7 +55,10 @@ export interface TrustedByProps {
 }
 
 function LogoItem({ client }: { client: ClientItem }) {
-  const logoSrc = resolveImageUrl(client.logo, client.externalLogoUrl);
+  const logoSrc = resolveImageUrl(client.logo, client.externalLogoUrl, {
+    width: 300,
+    quality: 80,
+  });
 
   return (
     <div
@@ -70,6 +73,7 @@ function LogoItem({ client }: { client: ClientItem }) {
             alt={client.name}
             className="h-11 sm:h-14 md:h-16 max-w-[170px] sm:max-w-[220px] md:max-w-[260px] w-auto object-contain brightness-90 group-hover/item:brightness-100 group-hover/item:scale-105 transition-all duration-300"
             loading="lazy"
+            decoding="async"
           />
         </div>
       ) : (

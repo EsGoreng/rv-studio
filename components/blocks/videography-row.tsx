@@ -44,7 +44,8 @@ export function VideographyRow({
           const fallback = SAMPLE_PLAYLIST[index % SAMPLE_PLAYLIST.length];
           const thumb = resolveImageUrl(
             item.thumbnail,
-            item.externalThumbnail || fallback?.thumbnail
+            item.externalThumbnail || fallback?.thumbnail,
+            { width: 540, height: 304, quality: 75 }
           );
           return {
             id: item._key || String(index + 1),
@@ -182,6 +183,7 @@ function VideoCard({
           alt={item.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105"
           loading={index > 4 ? "lazy" : "eager"}
+          decoding="async"
         />
 
         {/* Play Icon Hint on Hover */}

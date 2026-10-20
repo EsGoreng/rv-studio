@@ -124,6 +124,8 @@ export function GalleryImage({
         layoutId={`image-${id}`}
         src={src}
         alt={alt || title || "Gallery Image"}
+        loading="lazy"
+        decoding="async"
         className="w-full h-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-[1.02]"
         variants={{
           hover: { scale: 0.98 },

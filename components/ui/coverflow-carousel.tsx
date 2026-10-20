@@ -41,6 +41,8 @@ function BookCoverIllustration({
         src={src}
         alt={alt}
         draggable={false}
+        loading="lazy"
+        decoding="async"
         referrerPolicy="no-referrer"
         onLoad={(e) => {
           const img = e.currentTarget;
