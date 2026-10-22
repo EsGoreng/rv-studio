@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { siteConfig } from "@/lib/site";
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+  colorScheme: "dark",
+};
 
 const netflixSans = localFont({
   src: [
@@ -109,9 +114,10 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${netflixSans.variable} font-sans h-full antialiased`}
+      className={`dark ${netflixSans.variable} font-sans h-full antialiased`}
+      style={{ colorScheme: "dark" }}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <JsonLd data={rootSchema} id="root-structured-data" />
         {children}
       </body>

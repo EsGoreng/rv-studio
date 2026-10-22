@@ -230,7 +230,7 @@ export function TiltedGridHero({
                 WebkitBackfaceVisibility: "hidden",
               }}
             >
-              <div className="group relative w-full h-full rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-white/10 dark:border-white/15 bg-card/90 transition-transform">
+              <div className="group relative w-full h-full rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-white/15 bg-card/90 transition-transform">
                 <img
                   src={img.src}
                   alt={img.alt || "Studio portfolio"}

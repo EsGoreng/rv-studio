@@ -81,7 +81,7 @@ export const ModernBookCover = ({
   return (
     <div
       className={cn(
-        "z-10 group [perspective:1200px] select-none [--shadowColor:rgba(0,0,0,0.35)] dark:[--shadowColor:rgba(0,0,0,0.7)]",
+        "z-10 group [perspective:1200px] select-none [--shadowColor:rgba(0,0,0,0.7)]",
         isFullSize ? "w-full h-full flex justify-center items-center" : "w-min",
         className
       )}

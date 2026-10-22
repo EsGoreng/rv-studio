@@ -142,7 +142,7 @@ export function BottomNavBar({
       <div className="hidden md:block">
         <Dock
           className={cn(
-            "items-end pb-3 border border-border/50 bg-background/80 shadow-2xl backdrop-blur-xl dark:bg-neutral-900/80 dark:border-neutral-800/80",
+            "items-end pb-3 border border-neutral-800/80 bg-neutral-900/80 shadow-2xl backdrop-blur-xl",
             dockClassName
           )}
         >
@@ -151,7 +151,7 @@ export function BottomNavBar({
             return (
               <DockItem
                 key={idx}
-                className="aspect-square rounded-full bg-muted/80 hover:bg-muted dark:bg-neutral-800/80 dark:hover:bg-neutral-700/80 transition-colors cursor-pointer shadow-sm hover:shadow-md"
+                className="aspect-square rounded-full bg-neutral-800/80 hover:bg-neutral-700/80 transition-colors cursor-pointer shadow-sm hover:shadow-md"
                 onClick={() => handleClick(item)}
               >
                 <DockLabel>{item.title}</DockLabel>
@@ -175,7 +175,7 @@ export function BottomNavBar({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-30 bg-black/40 dark:bg-black/60 backdrop-blur-md"
+                className="fixed inset-0 z-30 bg-black/60 backdrop-blur-md"
                 onClick={() => setIsOpen(false)}
                 aria-hidden="true"
               />
@@ -187,7 +187,7 @@ export function BottomNavBar({
                 exit={{ opacity: 0, y: 15, scale: 0.92 }}
                 transition={{ type: "spring", damping: 25, stiffness: 350 }}
                 style={{ transformOrigin: "bottom right" }}
-                className="absolute bottom-full right-0 mb-3 z-40 w-56 rounded-2xl border border-border/60 bg-background/95 dark:bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-2xl dark:border-neutral-800/80 overflow-hidden"
+                className="absolute bottom-full right-0 mb-3 z-40 w-56 rounded-2xl border border-neutral-800/80 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-2xl overflow-hidden"
                 role="menu"
                 aria-orientation="vertical"
               >
@@ -208,7 +208,7 @@ export function BottomNavBar({
                           "flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left cursor-pointer",
                           isActive
                             ? "bg-foreground/10 text-foreground font-semibold"
-                            : "text-foreground/75 hover:text-foreground hover:bg-muted/80 dark:hover:bg-neutral-800/80 active:scale-[0.98]"
+                            : "text-foreground/75 hover:text-foreground hover:bg-neutral-800/80 active:scale-[0.98]"
                         )}
                         role="menuitem"
                       >
@@ -217,7 +217,7 @@ export function BottomNavBar({
                             "flex items-center justify-center w-8 h-8 rounded-lg transition-colors",
                             isActive
                               ? "bg-foreground text-background"
-                              : "bg-muted/80 dark:bg-neutral-800/80 text-foreground/80"
+                              : "bg-neutral-800/80 text-foreground/80"
                           )}
                         >
                           <Icon className="w-4 h-4" />
@@ -240,8 +240,8 @@ export function BottomNavBar({
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
           className={cn(
-            "relative z-40 flex h-12 w-12 items-center justify-center rounded-full border border-border/50 bg-background/85 shadow-2xl backdrop-blur-xl transition-all duration-200 active:scale-95 dark:border-neutral-800/80 dark:bg-neutral-900/85 hover:bg-muted/80 dark:hover:bg-neutral-800/80 cursor-pointer",
-            isOpen && "border-foreground/20 bg-background dark:bg-neutral-900"
+            "relative z-40 flex h-12 w-12 items-center justify-center rounded-full border border-neutral-800/80 bg-neutral-900/85 shadow-2xl backdrop-blur-xl transition-all duration-200 active:scale-95 hover:bg-neutral-800/80 cursor-pointer",
+            isOpen && "border-foreground/20 bg-neutral-900"
           )}
           aria-label={isOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
           aria-expanded={isOpen}

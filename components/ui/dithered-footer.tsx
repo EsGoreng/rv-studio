@@ -105,7 +105,6 @@ const DEFAULT_COLUMNS: FooterColumn[] = [
             { label: "Videography", href: "/videography" },
             { label: "Photography", href: "/photography" },
             { label: "About Us", href: "/about" },
-            { label: "Pricelist (AI / Markdown)", href: "/pricing.md" },
         ],
     },
 ];
@@ -293,19 +292,6 @@ export default function DitheredFooter({
                         <div className="pt-3 border-t border-border/60 text-xs text-muted-foreground">
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                                 <p>{displayCopyright}</p>
-                                <a
-                                    href="/llms.txt"
-                                    className={`transition-colors hover:text-foreground ${focus}`}
-                                    title="Machine-readable context for AI assistants"
-                                >
-                                    llms.txt
-                                </a>
-                                <a
-                                    href="/sitemap.xml"
-                                    className={`transition-colors hover:text-foreground ${focus}`}
-                                >
-                                    Sitemap
-                                </a>
                                 {status && (
                                     <a
                                         href={status.href}

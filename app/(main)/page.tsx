@@ -4,6 +4,7 @@ import { TrustedBySection } from "@/components/blocks/trusted-by";
 import { VideoShowcaseSection } from "@/components/blocks/video-showcase";
 import { ShowcaseGallerySection } from "@/components/blocks/showcase-gallery-section";
 import { CoverflowSection } from "@/components/blocks/coverflow-section";
+import { FolderMenuSection } from "@/components/blocks/folder-menu-section";
 import { FAQSection } from "@/components/blocks/faq";
 import { getHomePageData } from "@/sanity/lib/queries";
 import { siteConfig } from "@/lib/site";
@@ -47,11 +48,12 @@ export default async function Home() {
 
   return (
     <>
-      <Hero data={sanityData?.hero} />
-      <VideoShowcaseSection data={sanityData?.videoShowcase} />
-      <ShowcaseGallerySection data={sanityData?.showcaseGallery} />
-      <CoverflowSection data={sanityData?.coverflow} />
+      <Hero data={sanityData?.hero} gallery={sanityData?.showcaseGallery} />
       <TrustedBySection data={sanityData?.trustedBy} />
+      <FolderMenuSection />
+      {/* <VideoShowcaseSection data={sanityData?.videoShowcase} />
+      <ShowcaseGallerySection data={sanityData?.showcaseGallery} />
+      <CoverflowSection data={sanityData?.coverflow} /> */}
       <FAQSection data={sanityData?.faq} />
     </>
   );
