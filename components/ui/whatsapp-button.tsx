@@ -39,6 +39,7 @@ export function WhatsAppButton({
   ariaLabel = "Hubungi kami via WhatsApp",
 }: WhatsAppButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +53,14 @@ export function WhatsAppButton({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [threshold]);
 
+  useEffect(() => {
+    const handleNavMenu = (e: Event) => {
+      setNavMenuOpen((e as CustomEvent<{ open: boolean }>).detail.open);
+    };
+    window.addEventListener("navmenu", handleNavMenu);
+    return () => window.removeEventListener("navmenu", handleNavMenu);
+  }, []);
+
   // Tidak render jika tidak ada nomor
   if (!phoneNumber) return null;
 
@@ -60,7 +69,7 @@ export function WhatsAppButton({
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !navMenuOpen && (
         <motion.a
           href={waUrl}
           target="_blank"
@@ -70,8 +79,8 @@ export function WhatsAppButton({
           exit={{ opacity: 0, scale: 0.8, y: 10 }}
           transition={{ type: "spring", stiffness: 350, damping: 25 }}
           className={cn(
-            // Diposisikan di sebelah kiri BackToTop (right-20 pada mobile, md:right-20 pada desktop)
-            "fixed bottom-20 right-20 md:bottom-6 md:right-20 z-40 group flex h-12 w-12 items-center justify-center rounded-full border border-neutral-800/80 bg-neutral-900/85 text-foreground shadow-2xl backdrop-blur-xl transition-all duration-200 hover:bg-[#25D366]/15 hover:border-[#25D366]/60 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/50",
+            // Di atas BackToTop: right sama (right-5/md:right-6), bottom lebih tinggi (bottom-36/md:bottom-22)
+            "fixed bottom-36 right-5 md:bottom-22 md:right-6 z-40 group flex h-12 w-12 items-center justify-center rounded-full border border-neutral-800/80 bg-neutral-900/85 text-foreground shadow-2xl backdrop-blur-xl transition-all duration-200 hover:bg-[#25D366]/15 hover:border-[#25D366]/60 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/50",
             className
           )}
           aria-label={ariaLabel}

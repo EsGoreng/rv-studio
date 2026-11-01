@@ -79,6 +79,13 @@ export function BottomNavBar({
     setIsOpen(false);
   }, [pathname]);
 
+  // Dispatch custom event when isOpen changes so floating buttons can hide
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("navmenu", { detail: { open: isOpen } })
+    );
+  }, [isOpen]);
+
   // Close menu on outside click or Escape key
   useEffect(() => {
     if (!isOpen) return;

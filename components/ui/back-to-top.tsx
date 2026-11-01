@@ -35,6 +35,7 @@ export function BackToTop({
 }: BackToTopProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,6 +58,14 @@ export function BackToTop({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [threshold]);
 
+  useEffect(() => {
+    const handleNavMenu = (e: Event) => {
+      setNavMenuOpen((e as CustomEvent<{ open: boolean }>).detail.open);
+    };
+    window.addEventListener("navmenu", handleNavMenu);
+    return () => window.removeEventListener("navmenu", handleNavMenu);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -71,7 +80,7 @@ export function BackToTop({
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !navMenuOpen && (
         <motion.button
           type="button"
           onClick={scrollToTop}
