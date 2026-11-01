@@ -10,6 +10,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { DitheredHeader } from "@/components/ui/dithered-grid"
 import { AnimatedFolder, type Project } from "@/components/ui/3d-folder"
+import { resolveImageUrl } from "@/sanity/lib/image"
+import type { HomePageSanityData } from "@/sanity/lib/queries"
 import { cn } from "@/lib/utils"
 
 export interface ServiceFolderItem {
@@ -138,21 +140,170 @@ export const DEFAULT_SERVICE_FOLDERS: ServiceFolderItem[] = [
   },
 ]
 
+export interface FolderMenuSectionData {
+  videoShowcase?: {
+    items?: Array<{
+      _key?: string
+      title?: string
+      description?: string
+      category?: string
+      videoSrc?: string
+      thumbnail?: any
+      externalThumbnail?: string
+    }>
+  } | null
+  gallery?: {
+    items?: Array<{
+      _key?: string
+      title?: string
+      category?: string
+      image?: any
+      externalSrc?: string
+      alt?: string
+    }>
+  } | null
+  showcaseGallery?: {
+    items?: Array<{
+      _key?: string
+      title?: string
+      category?: string
+      image?: any
+      externalSrc?: string
+      alt?: string
+    }>
+  } | null
+  coverflow?: {
+    slides?: Array<{
+      _key?: string
+      title?: string
+      subtitle?: string
+      description?: string
+      image?: any
+      externalSrc?: string
+      alt?: string
+    }>
+  } | null
+}
+
 export interface FolderMenuSectionProps {
   title?: string
   description?: string
   services?: ServiceFolderItem[]
+  data?: FolderMenuSectionData | HomePageSanityData | null
   className?: string
   id?: string
+}
+
+/**
+ * Maps Sanity content to service folder projects:
+ * - Yearbook: slide image from item yearbook (sanity skema coverflow)
+ * - Photograph: 3 top images from sanity skema gallery
+ * - Videography: thumbnail images from 3 top videos from sanity skema videoShowcase
+ */
+export function buildServiceFolders(
+  data?: FolderMenuSectionProps["data"],
+  baseFolders: ServiceFolderItem[] = DEFAULT_SERVICE_FOLDERS
+): ServiceFolderItem[] {
+  if (!data) return baseFolders
+
+  return baseFolders.map((folder) => {
+    if (folder.id === "videography") {
+      const sanityVideos = data.videoShowcase?.items
+      if (!sanityVideos || sanityVideos.length === 0) return folder
+
+      const mapped: Project[] = sanityVideos.slice(0, 3).map((item, idx) => {
+        const fallback = folder.projects[idx] || folder.projects[0]
+        const image = resolveImageUrl(
+          item.thumbnail,
+          item.externalThumbnail || fallback?.image,
+          { width: 800, quality: 80 }
+        )
+        return {
+          id: item._key || `video-${idx + 1}`,
+          title: item.title || fallback?.title || `Video ${idx + 1}`,
+          description: item.category || item.description || fallback?.description,
+          image: image || fallback?.image,
+          href: "/videography",
+        }
+      })
+
+      return {
+        ...folder,
+        projects: mapped,
+      }
+    }
+
+    if (folder.id === "photography") {
+      const galleryItems = data.gallery?.items || data.showcaseGallery?.items
+      if (!galleryItems || galleryItems.length === 0) return folder
+
+      const mapped: Project[] = galleryItems.slice(0, 3).map((item, idx) => {
+        const fallback = folder.projects[idx] || folder.projects[0]
+        const image = resolveImageUrl(
+          item.image,
+          item.externalSrc || fallback?.image,
+          { width: 800, quality: 80 }
+        )
+        return {
+          id: item._key || `photo-${idx + 1}`,
+          title: item.title || fallback?.title || `Photo ${idx + 1}`,
+          description: item.category || fallback?.description,
+          image: image || fallback?.image,
+          href: "/photography",
+        }
+      })
+
+      return {
+        ...folder,
+        projects: mapped,
+      }
+    }
+
+    if (folder.id === "yearbook") {
+      const coverflowSlides = data.coverflow?.slides
+      if (!coverflowSlides || coverflowSlides.length === 0) return folder
+
+      const mapped: Project[] = coverflowSlides.slice(0, 3).map((slide, idx) => {
+        const fallback = folder.projects[idx] || folder.projects[0]
+        const image = resolveImageUrl(
+          slide.image,
+          slide.externalSrc || fallback?.image,
+          { width: 800, quality: 80 }
+        )
+        return {
+          id: slide._key || `yb-${idx + 1}`,
+          title: slide.title || fallback?.title || `Yearbook ${idx + 1}`,
+          description: slide.description || slide.subtitle || fallback?.description,
+          image: image || fallback?.image,
+          href: "/yearbook",
+        }
+      })
+
+      return {
+        ...folder,
+        projects: mapped,
+      }
+    }
+
+    return folder
+  })
 }
 
 export function FolderMenuSection({
   title = "Layanan Kami",
   description = "Eksplorasi portfolio dan penawaran karya terbaik kami. Klik folder untuk menuju halaman layanan.",
-  services = DEFAULT_SERVICE_FOLDERS,
+  services: propServices,
+  data,
   className,
   id = "services-menu",
 }: FolderMenuSectionProps) {
+  const services = React.useMemo(() => {
+    if (propServices && propServices.length > 0) {
+      return propServices
+    }
+    return buildServiceFolders(data, DEFAULT_SERVICE_FOLDERS)
+  }, [propServices, data])
+
   const [activeIndex, setActiveIndex] = React.useState(0)
   const [isMobile, setIsMobile] = React.useState(false)
   const [mobileOpenIndex, setMobileOpenIndex] = React.useState<number | null>(null)
@@ -237,7 +388,7 @@ export function FolderMenuSection({
       id={id}
       ref={containerRef}
       className={cn(
-        "relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden scroll-mt-12",
+        "relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden scroll-mt-12",
         className,
       )}
     >
@@ -246,7 +397,8 @@ export function FolderMenuSection({
         gradientHeight="120%"
         fade="bottom"
         accent="#d4d4d8"
-        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm mb-10 sm:mb-14"
+        liquidGlass
+        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 mb-10 sm:mb-14"
       >
         <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">

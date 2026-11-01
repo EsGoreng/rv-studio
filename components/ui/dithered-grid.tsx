@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { LiquidGlass } from "@/components/ui/liquid-glass";
 
 const STYLES = `
 .dg-field {
@@ -164,6 +165,10 @@ export interface DitheredHeaderProps extends React.HTMLAttributes<HTMLDivElement
   gradientHeight?: number | string;
   gridClassName?: string;
   children?: React.ReactNode;
+  /** Wrap the content slot with a LiquidGlass effect */
+  liquidGlass?: boolean;
+  /** Extra className forwarded to the LiquidGlass wrapper (only used when liquidGlass=true) */
+  liquidGlassClassName?: string;
 }
 
 /**
@@ -180,6 +185,8 @@ export function DitheredHeader({
   className,
   style,
   children,
+  liquidGlass = false,
+  liquidGlassClassName,
   ...props
 }: DitheredHeaderProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -213,35 +220,58 @@ export function DitheredHeader({
       ref={containerRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={cn("relative overflow-hidden", className)}
+      className={cn(
+        "relative",
+        // ketika liquidGlass aktif, border/rounded/padding dipindah ke LiquidGlass
+        // outer div hanya sebagai positioner
+        liquidGlass ? "" : cn("overflow-hidden", className),
+      )}
       style={
-        {
-          "--dg-accent": accent,
-          "--dg-gradient-height": heightValue,
-          ...style,
-        } as React.CSSProperties
+        liquidGlass
+          ? undefined
+          : ({
+              "--dg-accent": accent,
+              "--dg-gradient-height": heightValue,
+              ...style,
+            } as React.CSSProperties)
       }
-      {...props}
+      {...(liquidGlass ? {} : props)}
     >
       <style>{STYLES}</style>
 
-      {/* Grid Pattern Background Layer */}
-      <div className={cn("absolute inset-0 pointer-events-none -z-10", gridClassName)}>
-        <div ref={fieldRef} className="dg-field">
-          <div
-            className={cn(
-              "dg-dots",
-              fade === "bottom" && "dg-fade-bottom",
-              fade === "top" && "dg-fade-top",
-              fade === "none" && "dg-fade-none",
-              animate && "dg-animate"
-            )}
-          />
+      {/* Grid Pattern Background Layer — hidden when liquidGlass is active */}
+      {!liquidGlass && (
+        <div className={cn("absolute inset-0 pointer-events-none -z-10", gridClassName)}>
+          <div ref={fieldRef} className="dg-field">
+            <div
+              className={cn(
+                "dg-dots",
+                fade === "bottom" && "dg-fade-bottom",
+                fade === "top" && "dg-fade-top",
+                fade === "none" && "dg-fade-none",
+                animate && "dg-animate"
+              )}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Header Content */}
-      <div className="relative z-10 ">{children}</div>
+      {liquidGlass ? (
+        <LiquidGlass
+          asWrapper
+          className={cn(className, liquidGlassClassName)}
+          distortWidth={0.4}
+          distortHeight={0.3}
+          distortRadius={0.5}
+          smoothStepEdge={0.7}
+          distanceOffset={0.1}
+        >
+          {children}
+        </LiquidGlass>
+      ) : (
+        <div className="relative z-10">{children}</div>
+      )}
     </div>
   );
 }

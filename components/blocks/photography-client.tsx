@@ -69,7 +69,7 @@ export function PhotographyClient({ data }: PhotographyClientProps) {
   const title = "Photograph";
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground pt-6 sm:pt-10 pb-20 selection:bg-neutral-800 selection:text-white">
+    <div className="relative min-h-screen bg-transparent text-foreground pt-6 sm:pt-10 pb-20 selection:bg-neutral-800 selection:text-white">
       {/* Background Subtle Gradient Glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-primary/5 via-transparent to-transparent -z-10" />
 
@@ -78,7 +78,8 @@ export function PhotographyClient({ data }: PhotographyClientProps) {
         <DitheredHeader gradientHeight="120%"
           fade="bottom"
           accent="#d4d4d8"
-          className="mb-12 sm:mb-16 py-8 sm:py-12 px-4 rounded-3xl border border-border/40 bg-card/30 backdrop-blur-sm"
+          liquidGlass
+          className="mb-12 sm:mb-16 py-8 sm:py-12 px-4 rounded-3xl border border-border/40"
         >
           <div className="space-y-6 text-center flex flex-col items-center">
             <div className="space-y-3">

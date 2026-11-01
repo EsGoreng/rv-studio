@@ -9,14 +9,14 @@ export const heroType = defineType({
       name: "speed",
       title: "Animation Speed",
       type: "number",
-      description: "Scrolling grid animation speed (default: 8)",
+      description: "Kecepatan animasi slider hero (default: 8)",
       initialValue: 8,
     }),
     defineField({
       name: "images",
-      title: "Hero Tilted Grid Images",
+      title: "Hero Slider Images",
       type: "array",
-      description: "Images displayed in the 3D tilted grid background",
+      description: "Daftar gambar yang ditampilkan pada slider/background hero",
       of: [
         {
           type: "object",

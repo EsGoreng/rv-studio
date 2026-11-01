@@ -19,14 +19,6 @@ export const structure: StructureResolver = (S) =>
             .documentId("videoShowcase")
         ),
 
-      S.listItem()
-        .title("Showcase Gallery ")
-        .id("showcaseGallery")
-        .child(
-          S.document()
-            .schemaType("showcaseGallery")
-            .documentId("showcaseGallery")
-        ),
 
       S.listItem()
         .title("Gallery ")

@@ -70,6 +70,14 @@ export const coverflowType = defineType({
               description: "Password untuk membuka preview PDF buku kenangan (kosongkan jika tanpa password / publik)",
             }),
             defineField({
+              name: "previewPages",
+              title: "Preview Pages (Tanpa Password)",
+              type: "array",
+              of: [{ type: "number" }],
+              description:
+                "Nomor halaman yang bisa dilihat tanpa password, contoh: 1, 2, 3. Kosongkan agar tidak ada preview gratis.",
+            }),
+            defineField({
               name: "alt",
               title: "Alt Text",
               type: "string",

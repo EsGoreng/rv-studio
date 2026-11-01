@@ -18,6 +18,7 @@ export interface YearbookItem extends CoverflowSlide {
   totalPages?: number;
   pdfUrl?: string;
   password?: string;
+  previewPages?: number[];
   coverFinish?: string;
   highlights?: string[];
 }
@@ -68,6 +69,10 @@ export function YearbookClient({ data }: YearbookClientProps) {
           color: slide.color || "#14532d",
           pdfUrl: slide.pdfUrl || "",
           password: slide.password || undefined,
+          previewPages:
+            slide.previewPages && slide.previewPages.length > 0
+              ? slide.previewPages
+              : undefined,
           totalPages: pagesMeta ? parseInt(pagesMeta, 10) || undefined : undefined,
           aspectRatio: dimensions?.aspectRatio || 49 / 60,
           meta:
@@ -90,9 +95,13 @@ export function YearbookClient({ data }: YearbookClientProps) {
   const [passwordInput, setPasswordInput] = React.useState("");
   const [passwordError, setPasswordError] = React.useState<string | null>(null);
   const [showPassword, setShowPassword] = React.useState(false);
+  // Track which yearbook IDs have been authenticated this session
+  const [authenticatedIds, setAuthenticatedIds] = React.useState<Set<string>>(new Set());
 
   // Active selected yearbook
   const activeYearbook = yearbooks[activeIndex] || yearbooks[0] || null;
+  // True if the user has entered the correct password for the active yearbook
+  const isAuthenticated = !!(activeYearbook && authenticatedIds.has(activeYearbook.id));
 
   // Handle ESC key for password modal
   React.useEffect(() => {
@@ -113,16 +122,26 @@ export function YearbookClient({ data }: YearbookClientProps) {
   const handleOpenPreview = React.useCallback(() => {
     if (!activeYearbook) return;
 
-    // Check if yearbook has password from Sanity
-    if (activeYearbook.password && activeYearbook.password.trim() !== "") {
-      setPasswordInput("");
-      setPasswordError(null);
-      setShowPassword(false);
-      setIsPasswordModalOpen(true);
-    } else {
+    const hasPassword = !!(activeYearbook.password && activeYearbook.password.trim() !== "");
+
+    // Already authenticated this session → open full preview
+    if (!hasPassword || authenticatedIds.has(activeYearbook.id)) {
       setIsModalOpen(true);
+      return;
     }
-  }, [activeYearbook]);
+
+    // Has previewPages → open restricted preview immediately, user can still enter password separately
+    if (activeYearbook.previewPages && activeYearbook.previewPages.length > 0) {
+      setIsModalOpen(true);
+      return;
+    }
+
+    // No previewPages and not authenticated → ask for password
+    setPasswordInput("");
+    setPasswordError(null);
+    setShowPassword(false);
+    setIsPasswordModalOpen(true);
+  }, [activeYearbook, authenticatedIds]);
 
   // Verify entered password
   const handleVerifyPassword = (e?: React.FormEvent) => {
@@ -139,6 +158,8 @@ export function YearbookClient({ data }: YearbookClientProps) {
       setPasswordError(null);
       setIsPasswordModalOpen(false);
       setPasswordInput("");
+      // Mark this yearbook as authenticated for the rest of the session
+      setAuthenticatedIds((prev) => new Set(prev).add(activeYearbook.id));
       setIsModalOpen(true);
     } else {
       setPasswordError("Password salah. Silakan coba lagi.");
@@ -146,14 +167,15 @@ export function YearbookClient({ data }: YearbookClientProps) {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white pt-6 sm:pt-10 pb-12 sm:pb-20">
+    <div className="relative min-h-screen bg-transparent text-white selection:bg-[#E50914] selection:text-white pt-6 sm:pt-10 pb-12 sm:pb-20">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-16">
         {/* 1. Header with Dithered Grid */}
         <DitheredHeader
           gradientHeight="120%"
           fade="bottom"
           accent="#d4d4d8"
-          className="flex flex-col items-center text-center py-8 sm:py-14 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm shadow-2xl"
+          liquidGlass
+          className="flex flex-col items-center text-center py-8 sm:py-14 px-4 rounded-3xl border border-white/10 shadow-2xl"
         >
           <div className="space-y-4 max-w-3xl mx-auto flex flex-col items-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">
@@ -204,12 +226,14 @@ export function YearbookClient({ data }: YearbookClientProps) {
                       size="lg"
                       className="flex-1 sm:flex-none group rounded-xl px-5 font-medium bg-white text-black hover:bg-neutral-200 shadow-lg shadow-white/5 transition-all"
                     >
-                      {activeYearbook.password ? (
+                      {activeYearbook.password && !isAuthenticated ? (
                         <Lock className="mr-2 h-4 w-4 text-black group-hover:scale-110 transition-transform" />
                       ) : (
                         <BookOpen className="mr-2 h-4 w-4 text-black group-hover:scale-110 transition-transform" />
                       )}
-                      Preview
+                      {activeYearbook.password && !isAuthenticated && activeYearbook.previewPages?.length
+                        ? "Preview Terbatas"
+                        : "Preview"}
                     </Button>
                   </div>
                 </div>
@@ -366,6 +390,14 @@ export function YearbookClient({ data }: YearbookClientProps) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         yearbook={activeYearbook}
+        isAuthenticated={isAuthenticated}
+        onRequestPassword={() => {
+          setIsModalOpen(false);
+          setPasswordInput("");
+          setPasswordError(null);
+          setShowPassword(false);
+          setIsPasswordModalOpen(true);
+        }}
       />
     </div>
   );

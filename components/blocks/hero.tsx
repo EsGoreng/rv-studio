@@ -8,28 +8,18 @@ import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO_IMAGES } from "@/constants/hero";
 import { resolveImageUrl } from "@/sanity/lib/image";
+import { cn } from "@/lib/utils";
 
 export interface HeroBlockProps {
   speed?: number;
   title?: string;
   subtitle?: string;
+  className?: string;
   images?: Array<{
     src: string;
     alt?: string;
   }>;
-  gallery?: {
-    items?: Array<{
-      _key?: string;
-      title?: string;
-      category?: string;
-      image?: any;
-      externalSrc?: string;
-      alt?: string;
-    }>;
-  } | null;
   data?: {
-    title?: string;
-    subtitle?: string;
     speed?: number;
     images?: Array<{
       alt?: string;
@@ -44,38 +34,17 @@ export function Hero({
   title: propTitle,
   subtitle: propSubtitle,
   images: propImages,
-  gallery,
+  className,
   data,
 }: HeroBlockProps) {
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const title =
-    data?.title ??
-    propTitle ??
-    "Mengabadikan Momen, Menciptakan Kenangan Abadi.";
+  const title = propTitle ?? "";
 
-  const subtitle =
-    data?.subtitle ??
-    propSubtitle ??
-    "RV Project adalah studio visual kreatif yang berdedikasi menghadirkan karya fotografi berkonsep, videografi sinematik, dan buku tahunan sekolah dengan standar visual terbaik.";
+  const subtitle = propSubtitle ?? "";
 
-  // Prioritize images from sanityData?.showcaseGallery, then data?.images, then fallback
+  // Use images from Sanity hero schema (data?.images), then propImages, then fallback to HERO_IMAGES
   const slideImages = useMemo(() => {
-    if (gallery?.items && gallery.items.length > 0) {
-      return gallery.items.map((item, index) => ({
-        src: resolveImageUrl(
-          item.image,
-          item.externalSrc || HERO_IMAGES[index % HERO_IMAGES.length]?.src,
-          { width: 1600, height: 720, quality: 85 }
-        ),
-        alt: item.alt || item.title || `Gallery showcase ${index + 1}`,
-      }));
-    }
-
-    if (propImages && propImages.length > 0) {
-      return propImages;
-    }
-
     if (data?.images && data.images.length > 0) {
       return data.images.map((item, index) => ({
         src: resolveImageUrl(
@@ -87,8 +56,12 @@ export function Hero({
       }));
     }
 
+    if (propImages && propImages.length > 0) {
+      return propImages;
+    }
+
     return HERO_IMAGES;
-  }, [gallery?.items, data?.images, propImages]);
+  }, [data?.images, propImages]);
 
   // Auto-slide every 5 seconds (5000ms)
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -142,7 +115,10 @@ export function Hero({
 
   return (
     <section
-      className="relative min-h-[85vh] py-14 sm:py-18 md:py-20 px-4 sm:px-6 lg:px-8 bg-background text-foreground overflow-hidden"
+      className={cn(
+        "relative pt-14 sm:pt-18 md:pt-20 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 bg-transparent text-foreground overflow-hidden",
+        className
+      )}
       ref={heroRef}
     >
       {/* Ambient background glow & spotlight (monochrome neutral, no red) */}
@@ -260,67 +236,6 @@ export function Hero({
           </TimelineContent>
         </div>
 
-        {/* Main Content */}
-        <div className="w-full">
-          <h1 className="sm:text-4xl md:text-5xl text-2xl !leading-[115%] font-bold text-foreground mb-6 sm:mb-8 tracking-tight max-w-4xl">
-            <VerticalCutReveal
-              splitBy="words"
-              staggerDuration={0.06}
-              staggerFrom="first"
-              reverse={true}
-              transition={{
-                type: "spring",
-                stiffness: 240,
-                damping: 28,
-                delay: 0.2,
-              }}
-            >
-              {title}
-            </VerticalCutReveal>
-          </h1>
-
-          <TimelineContent
-            as="div"
-            animationNum={4}
-            timelineRef={heroRef}
-            customVariants={revealVariants}
-            className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 text-muted-foreground w-full"
-          >
-            <TimelineContent
-              as="div"
-              animationNum={5}
-              timelineRef={heroRef}
-              customVariants={revealVariants}
-              className="sm:text-sm text-xs"
-            >
-              <p className="leading-relaxed text-justify">
-                {subtitle}
-              </p>
-            </TimelineContent>
-            <TimelineContent
-              as="div"
-              animationNum={6}
-              timelineRef={heroRef}
-              customVariants={revealVariants}
-              className="sm:text-sm text-xs"
-            >
-              <p className="leading-relaxed text-justify">
-                Setiap momen memiliki kisahnya sendiri. Dari kebersamaan di bangku sekolah hingga momen selebrasi istimewa, kami menyatukan estetika dan sentuhan visual terbaik untuk kenangan abadi Anda.
-              </p>
-            </TimelineContent>
-            <TimelineContent
-              as="div"
-              animationNum={7}
-              timelineRef={heroRef}
-              customVariants={revealVariants}
-              className="sm:text-sm text-xs"
-            >
-              <p className="leading-relaxed text-justify">
-                Didukung peralatan sinematografi modern dan tim kreatif yang berdedikasi, kami berkomitmen menghadirkan hasil dokumentasi berkualitas tinggi yang bermakna, autentik, dan dapat dikenang sepanjang masa.
-              </p>
-            </TimelineContent>
-          </TimelineContent>
-        </div>
       </div>
     </section>
   );

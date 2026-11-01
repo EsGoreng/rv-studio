@@ -102,7 +102,7 @@ export function FAQBlock({
     <div
       id="faq"
       className={cn(
-        "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-mt-12",
+        "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 scroll-mt-12",
         className
       )}
     >

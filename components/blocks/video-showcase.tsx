@@ -78,7 +78,8 @@ export function VideoShowcaseSection({
       <DitheredHeader gradientHeight="120%"
         fade="bottom"
         accent="#d4d4d8"
-        className="py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm text-center flex flex-col items-center text-center mb-10 sm:mb-14"
+        liquidGlass
+        className="py-8 sm:py-12 px-4 rounded-3xl border border-white/10 text-center flex flex-col items-center text-center mb-10 sm:mb-14"
       >
         <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">

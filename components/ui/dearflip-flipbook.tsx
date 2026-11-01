@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, RefreshCw, ExternalLink, Volume2, VolumeX, Eye, BookOpen } from "lucide-react";
+import { Loader2, RefreshCw, ExternalLink, Volume2, VolumeX, Eye, BookOpen, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Global polyfill for Promise.try (required by modern PDF.js builds if running in environments without native Promise.try)
@@ -154,6 +154,8 @@ export interface DearFlipViewerProps {
   className?: string;
   onReady?: () => void;
   showCustomBar?: boolean;
+  /** When set, only these page numbers are accessible (1-indexed). All other pages are blocked. */
+  allowedPages?: number[];
 }
 
 export function DearFlipViewer({
@@ -165,6 +167,7 @@ export function DearFlipViewer({
   className,
   onReady,
   showCustomBar = false,
+  allowedPages,
 }: DearFlipViewerProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const flipBookInstanceRef = React.useRef<{
@@ -180,6 +183,16 @@ export function DearFlipViewer({
   const [retryCount, setRetryCount] = React.useState(0);
   const [is3DMode, setIs3DMode] = React.useState(webgl);
   const [isSoundOn, setIsSoundOn] = React.useState(sound);
+  const [isPageBlocked, setIsPageBlocked] = React.useState(false);
+
+  // Sorted allowed pages for easy lookup
+  const allowedSet = React.useMemo(
+    () => (allowedPages && allowedPages.length > 0 ? new Set(allowedPages) : null),
+    [allowedPages]
+  );
+  const firstAllowedPage = allowedPages && allowedPages.length > 0
+    ? Math.min(...allowedPages)
+    : 1;
 
   // Initialize or re-initialize the flipbook
   React.useEffect(() => {
@@ -245,10 +258,12 @@ export function DearFlipViewer({
           hard: "cover",
           scrollWheel: true,
           autoPlay: false,
-          enableDownload: true,
+          enableDownload: !allowedSet, // disable download in restricted mode
           duration: 750,
           disableRange: true,
           disableAutoFetch: false,
+          // Open at first allowed page when restriction is active
+          ...(allowedSet ? { startPage: firstAllowedPage } : {}),
           mockupjsSrc: "/dflip/js/libs/mockup.min.js",
           pdfjsSrc: "/dflip/js/libs/pdf.min.js",
           pdfjsCompatibilitySrc: "/dflip/js/libs/compatibility.js",
@@ -267,6 +282,31 @@ export function DearFlipViewer({
               onReady?.();
             }
           },
+          // Intercept page flip: block pages not in allowedSet
+          ...(allowedSet
+            ? {
+                onFlip: (e: { page?: number }) => {
+                  if (isCancelled) return;
+                  const page = e?.page ?? 0;
+                  if (!allowedSet.has(page)) {
+                    setIsPageBlocked(true);
+                    // Return to the nearest allowed page
+                    setTimeout(() => {
+                      try {
+                        const inst = flipBookInstanceRef.current as unknown as {
+                          gotoPage?: (p: number) => void;
+                        };
+                        inst?.gotoPage?.(firstAllowedPage);
+                      } catch {
+                        // ignore
+                      }
+                    }, 80);
+                  } else {
+                    setIsPageBlocked(false);
+                  }
+                },
+              }
+            : {}),
         };
 
         const instance = win.jQuery(bookDiv).flipBook(source, options);
@@ -305,7 +345,7 @@ export function DearFlipViewer({
         containerRef.current.innerHTML = "";
       }
     };
-  }, [source, is3DMode, isSoundOn, retryCount, bookTitle, onReady]);
+  }, [source, is3DMode, isSoundOn, retryCount, bookTitle, onReady, allowedSet, firstAllowedPage]);
 
   return (
     <div
@@ -374,6 +414,35 @@ export function DearFlipViewer({
             <p className="mt-1 text-xs text-neutral-400 max-w-xs">
               Memproses rendering halaman PDF realistis dengan efek lembaran kertas
             </p>
+          </div>
+        )}
+
+        {/* Restricted Page Overlay */}
+        {isPageBlocked && allowedSet && (
+          <div
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md text-white px-6 text-center animate-in fade-in duration-150"
+            onClick={() => setIsPageBlocked(false)}
+          >
+            <div className="w-14 h-14 rounded-2xl bg-neutral-900 border border-white/15 flex items-center justify-center shadow-lg mb-4">
+              <Lock className="w-7 h-7 text-white" />
+            </div>
+            <h4 className="text-sm font-semibold tracking-wide text-neutral-200">
+              Halaman Terkunci
+            </h4>
+            <p className="mt-1.5 text-xs text-neutral-400 max-w-xs leading-relaxed">
+              Halaman ini hanya dapat diakses setelah memasukkan password yang benar.
+              Preview gratis tersedia di halaman{" "}
+              <span className="font-semibold text-white">
+                {[...(allowedPages ?? [])].sort((a, b) => a - b).join(", ")}
+              </span>
+              .
+            </p>
+            <button
+              className="mt-4 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-neutral-200 border border-white/10 transition-colors"
+              onClick={() => setIsPageBlocked(false)}
+            >
+              Kembali ke Preview
+            </button>
           </div>
         )}
 

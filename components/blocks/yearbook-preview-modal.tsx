@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, BookOpen, Download } from "lucide-react";
+import { X, BookOpen, Download, Lock } from "lucide-react";
 import { DearFlipViewer } from "@/components/ui/dearflip-flipbook";
 import type { YearbookItem } from "@/components/blocks/yearbook-client";
 
@@ -9,13 +9,28 @@ export interface YearbookPreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   yearbook: YearbookItem | null;
+  /** Whether the user has successfully entered the password */
+  isAuthenticated?: boolean;
+  /** Called when the user clicks "Masukkan Password" from inside the restricted preview */
+  onRequestPassword?: () => void;
 }
 
 export function YearbookPreviewModal({
   isOpen,
   onClose,
   yearbook,
+  isAuthenticated = false,
+  onRequestPassword,
 }: YearbookPreviewModalProps) {
+  // Determine allowed pages for restricted preview:
+  // - No password → full access
+  // - Has password + authenticated → full access
+  // - Has password + NOT authenticated → only previewPages (if any)
+  const needsAuth = !!(yearbook?.password && yearbook.password.trim() !== "");
+  const restrictedPages =
+    needsAuth && !isAuthenticated && yearbook?.previewPages?.length
+      ? yearbook.previewPages
+      : undefined;
   // Handle ESC key to close modal
   React.useEffect(() => {
     if (!isOpen) return;
@@ -113,14 +128,16 @@ export function YearbookPreviewModal({
                 </h3>
               </div>
               <p className="text-xs text-neutral-400 truncate">
-                {yearbook.subtitle || yearbook.institution}
+                {restrictedPages
+                  ? `Masukkan password untuk akses penuh`
+                  : yearbook.subtitle || yearbook.institution}
               </p>
             </div>
           </div>
 
           {/* Action buttons */}
           <div className="flex items-center gap-2 shrink-0">
-            {yearbook.pdfUrl && (
+            {yearbook.pdfUrl && !restrictedPages && (
               <a
                 href={yearbook.pdfUrl}
                 download
@@ -132,6 +149,16 @@ export function YearbookPreviewModal({
                 <Download className="w-3.5 h-3.5" />
                 <span>Unduh PDF</span>
               </a>
+            )}
+            {restrictedPages && onRequestPassword && (
+              <button
+                onClick={onRequestPassword}
+                className="hidden sm:inline-flex items-center gap-1.5  text-xs font-semibold p-2.5 rounded-xl bg-white/5 hover:bg-white/15 text-neutral-400 hover:text-white transition-colors border border-white/10"
+                title="Masukkan password untuk akses penuh"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>Masukkan Password</span>
+              </button>
             )}
 
             <button
@@ -154,6 +181,7 @@ export function YearbookPreviewModal({
               webgl={true}
               sound={true}
               showCustomBar={false}
+              allowedPages={restrictedPages}
               className="w-full h-full rounded-none border-none bg-transparent"
             />
           ) : (

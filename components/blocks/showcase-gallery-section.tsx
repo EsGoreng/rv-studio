@@ -78,7 +78,8 @@ export function ShowcaseGallerySection({
         gradientHeight="120%"
         fade="bottom"
         accent="#d4d4d8"
-        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm mb-4 sm:mb-6"
+        liquidGlass
+        className="flex flex-col items-center text-center py-8 sm:py-12 px-4 rounded-3xl border border-white/10 mb-4 sm:mb-6"
       >
         <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">

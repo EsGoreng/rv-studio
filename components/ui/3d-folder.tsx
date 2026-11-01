@@ -184,6 +184,7 @@ export function AnimatedFolder({
                 delay={index * 80}
                 isVisible={isExpanded}
                 index={index}
+                totalCount={Math.min(projects.length, 3)}
                 isClickable={cardClickAction !== "none"}
                 onClick={cardClickAction !== "none" ? () => handleProjectClick(project, index) : undefined}
                 isSelected={hiddenCardId === project.id}
@@ -642,15 +643,31 @@ export interface ProjectCardProps {
   delay: number
   isVisible: boolean
   index: number
+  totalCount?: number
   onClick?: () => void
   isClickable?: boolean
   isSelected?: boolean
 }
 
 export const ProjectCard = forwardRef<HTMLDivElement, ProjectCardProps>(
-  ({ image, title, delay, isVisible, index, onClick, isClickable = true, isSelected = false }, ref) => {
-    const rotations = [-12, 0, 12]
-    const translations = [-55, 0, 55]
+  ({ image, title, delay, isVisible, index, totalCount = 3, onClick, isClickable = true, isSelected = false }, ref) => {
+    let rotation = 0
+    let translation = 0
+
+    if (totalCount === 1) {
+      rotation = 0
+      translation = 0
+    } else if (totalCount === 2) {
+      const rotations = [-8, 8]
+      const translations = [-30, 30]
+      rotation = rotations[index] ?? 0
+      translation = translations[index] ?? 0
+    } else {
+      const rotations = [-12, 0, 12]
+      const translations = [-55, 0, 55]
+      rotation = rotations[index] ?? 0
+      translation = translations[index] ?? 0
+    }
 
     return (
       <div
@@ -666,7 +683,7 @@ export const ProjectCard = forwardRef<HTMLDivElement, ProjectCardProps>(
         )}
         style={{
           transform: isVisible
-            ? `translateY(-90px) translateX(${translations[index]}px) rotate(${rotations[index]}deg) scale(1)`
+            ? `translateY(-90px) translateX(${translation}px) rotate(${rotation}deg) scale(1)`
             : "translateY(0px) translateX(0px) rotate(0deg) scale(0.5)",
           opacity: isSelected ? 0 : isVisible ? 1 : 0,
           transition: `transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms, opacity 400ms ease-out ${delay}ms`,

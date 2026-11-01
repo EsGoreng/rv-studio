@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import { Hero } from "@/components/blocks/hero";
 import { TrustedBySection } from "@/components/blocks/trusted-by";
-import { VideoShowcaseSection } from "@/components/blocks/video-showcase";
-import { ShowcaseGallerySection } from "@/components/blocks/showcase-gallery-section";
-import { CoverflowSection } from "@/components/blocks/coverflow-section";
 import { FolderMenuSection } from "@/components/blocks/folder-menu-section";
+import { AboutHeader } from "@/components/blocks/about-header";
+import { AboutStory } from "@/components/blocks/about-story";
+import { AboutCTA } from "@/components/blocks/about-cta";
 import { FAQSection } from "@/components/blocks/faq";
 import { getHomePageData } from "@/sanity/lib/queries";
 import { siteConfig } from "@/lib/site";
@@ -48,12 +48,11 @@ export default async function Home() {
 
   return (
     <>
-      <Hero data={sanityData?.hero} gallery={sanityData?.showcaseGallery} />
+      <Hero data={sanityData?.hero} />
+      {/* <AboutHeader /> */}
+      <AboutStory />
       <TrustedBySection data={sanityData?.trustedBy} />
-      <FolderMenuSection />
-      {/* <VideoShowcaseSection data={sanityData?.videoShowcase} />
-      <ShowcaseGallerySection data={sanityData?.showcaseGallery} />
-      <CoverflowSection data={sanityData?.coverflow} /> */}
+      <FolderMenuSection data={sanityData} />
       <FAQSection data={sanityData?.faq} />
     </>
   );

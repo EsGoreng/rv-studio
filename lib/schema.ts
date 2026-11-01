@@ -34,11 +34,33 @@ export function getOrganizationSchema() {
       addressCountry: "ID",
     },
     areaServed: [
+      // Ciayumajakuning
       { "@type": "City", name: "Kuningan" },
       { "@type": "City", name: "Cirebon" },
       { "@type": "City", name: "Majalengka" },
       { "@type": "City", name: "Indramayu" },
+      // Jawa Barat lainnya
+      { "@type": "City", name: "Bandung" },
+      { "@type": "City", name: "Subang" },
+      { "@type": "City", name: "Sumedang" },
+      { "@type": "City", name: "Garut" },
+      { "@type": "City", name: "Tasikmalaya" },
+      { "@type": "City", name: "Ciamis" },
+      { "@type": "City", name: "Karawang" },
+      { "@type": "City", name: "Bekasi" },
+      { "@type": "City", name: "Bogor" },
+      { "@type": "City", name: "Sukabumi" },
+      { "@type": "City", name: "Purwakarta" },
+      // Jabodetabek
+      { "@type": "City", name: "Jakarta" },
+      { "@type": "City", name: "Depok" },
+      { "@type": "City", name: "Tangerang" },
+      // Jawa Tengah perbatasan
+      { "@type": "City", name: "Brebes" },
+      { "@type": "City", name: "Tegal" },
+      // Provinsi & negara
       { "@type": "AdministrativeArea", name: "Jawa Barat" },
+      { "@type": "AdministrativeArea", name: "Jawa Tengah" },
       { "@type": "Country", name: "Indonesia" },
     ],
     sameAs: [siteConfig.socials.instagram],

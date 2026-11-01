@@ -44,11 +44,11 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     icon: Book,
     href: "/yearbook",
   },
-  {
-    title: "About",
-    icon: HelpCircle,
-    href: "/about",
-  },
+  // {
+  //   title: "About",
+  //   icon: HelpCircle,
+  //   href: "/about",
+  // },
   {
     title: "Contact",
     icon: MessageCircle,

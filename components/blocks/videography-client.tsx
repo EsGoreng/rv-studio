@@ -86,14 +86,15 @@ export function VideographyClient({ data }: VideographyClientProps) {
   const title = "Videograph";
 
   return (
-    <div className="relative min-h-screen bg-black text-white selection:bg-[#E50914] selection:text-white pt-6 sm:pt-10 pb-8 sm:pb-16">
+    <div className="relative min-h-screen bg-transparent text-white selection:bg-[#E50914] selection:text-white pt-6 sm:pt-10 pb-8 sm:pb-16">
       {/* Container constrained to max-w-7xl, matching app/(main)/page.tsx */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 sm:pb-8 space-y-6 sm:space-y-10">
         {/* Page Header with Dithered Grid */}
         <DitheredHeader gradientHeight="120%"
           fade="bottom"
           accent="#d4d4d8"
-          className="py-8 sm:py-12 px-4 rounded-3xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm text-center"
+          liquidGlass
+          className="py-8 sm:py-12 px-4 rounded-3xl border border-white/10 text-center"
         >
           <div className="space-y-3 max-w-3xl mx-auto flex flex-col items-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">

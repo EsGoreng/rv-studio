@@ -37,6 +37,7 @@ export const HOME_PAGE_QUERY = `{
       title,
       category,
       image,
+      externalSrc,
       "alt": title
     }
   },
@@ -64,6 +65,7 @@ export const HOME_PAGE_QUERY = `{
       externalSrc,
       "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
       password,
+      previewPages,
       alt,
       meta[]{
         _key,
@@ -100,8 +102,6 @@ export const HOME_PAGE_QUERY = `{
 
 export interface HomePageSanityData {
   hero?: {
-    title?: string;
-    subtitle?: string;
     speed?: number;
     images?: Array<{
       _key?: string;
@@ -154,6 +154,7 @@ export interface HomePageSanityData {
       color?: string;
       pdfUrl?: string;
       password?: string;
+      previewPages?: number[];
       image?: any;
       externalSrc?: string;
       alt?: string;
@@ -301,6 +302,7 @@ export const YEARBOOK_PAGE_QUERY = `{
       description,
       "pdfUrl": coalesce(pdfFile.asset->url, pdfUrl),
       password,
+      previewPages,
       color,
       image {
         ...,
